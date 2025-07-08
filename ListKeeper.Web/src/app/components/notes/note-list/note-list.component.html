@@ -1,0 +1,124 @@
+<!-- Notes Interface for Logged-In Users -->
+<!-- Filter and Actions Bar -->
+<div class="filter-bar d-flex justify-content-between align-items-center mb-4">
+    <!-- Left side: Search and Status Filters -->
+    <div class="d-flex align-items-center gap-3">
+        <!-- Search Input -->
+        <div class="search-input-wrapper">
+            <input 
+                type="text" 
+                class="form-control" 
+                placeholder="Search notes..." 
+                aria-label="Search notes"
+                (keyup)="onSearch($event)">
+            <i class="fas fa-search"></i>
+        </div>
+
+        <!-- Status Filter Dropdown -->
+        <div class="dropdown">
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="statusDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                Status
+            </button>
+            <div class="dropdown-menu p-2" aria-labelledby="statusDropdown" (click)="onDropdownClick($event)" [formGroup]="statusForm">
+                @for(status of statuses; track status) {
+                    <div class="form-check">
+                        <input 
+                            class="form-check-input" 
+                            type="checkbox" 
+                            [formControlName]="status" 
+                            [id]="'check-' + status"
+                            (change)="onStatusChange(status)">
+                        <label class="form-check-label" [for]="'check-' + status">
+                            {{ status }}
+                        </label>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Right side: Add Note Button -->
+    <button class="btn btn-primary" (click)="openAddNoteModal()">Add New Note</button>
+</div>
+
+<!-- Note List Container -->
+<div class="note-list-container">
+   @for (note of notes; track note.id) {
+     <app-note-item [note]="note"
+       (delete)="deleteNote(note.id)"
+       (edit)="editNote($event)"
+       (complete)="completeNote(note.id)"></app-note-item>
+   }
+</div>
+
+<!-- Add Note Modal -->
+<div class="modal fade" id="addNoteModal" tabindex="-1" aria-labelledby="addNoteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addNoteModalLabel">Add New Note</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <app-note-form></app-note-form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="addNote()">Add Note</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Note Modal -->
+<div class="modal fade" id="editNoteModal" tabindex="-1" aria-labelledby="editNoteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editNoteModalLabel">Edit Note</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <app-note-form 
+          #editNoteForm
+          [noteToEdit]="currentEditingNote" 
+          [isEditMode]="true">
+        </app-note-form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="updateNote()">Update Note</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteNoteModal" tabindex="-1" aria-labelledby="deleteNoteModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title" id="deleteNoteModalLabel">
+          <i class="bi bi-exclamation-triangle-fill me-2"></i>Confirm Delete
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p class="mb-3">Are you sure you want to delete this note? This action cannot be undone.</p>
+        
+        @if (currentDeletingNote) {
+          <div class="border rounded p-3 bg-light">
+            <h6 class="fw-bold text-dark">{{ currentDeletingNote.title }}</h6>
+            <p class="text-muted mb-0">{{ currentDeletingNote.content }}</p>
+          </div>
+        }
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="cancelDelete()">Cancel</button>
+        <button type="button" class="btn btn-danger" (click)="confirmDelete()">
+          <i class="bi bi-trash me-1"></i>Delete Note
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

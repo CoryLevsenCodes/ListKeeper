@@ -1,0 +1,110 @@
+
+<!-- Login Page -->
+<div class="login-container">
+  <!-- Header Section -->
+  <div class="login-header py-5">
+    <div class="container text-center">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <h1 class="display-5 fw-bold mb-3">Welcome Back, Eh! 🇨🇦</h1>
+          <p class="lead mb-4">
+            Ready to get back to organizing your life like a true Canadian? Let's get you logged in faster than you can say "double-double"!
+          </p>
+          <div class="fun-stats d-flex justify-content-center align-items-center gap-4 flex-wrap">
+            <div class="stat-item">
+              <div class="stat-number h3 mb-0">🏒 Ready</div>
+              <small class="text-muted">To Score Goals</small>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number h3 mb-0">🍁 100%</div>
+              <small class="text-muted">Canadian Approved</small>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number h3 mb-0">☕ Powered</div>
+              <small class="text-muted">By Tim Hortons</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Login Form -->
+  <div class="login-form-section py-5">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-5 col-md-7">
+          <div class="login-card p-5 bg-white rounded-4 shadow-lg">
+            <div class="text-center mb-4">
+              <h2 class="h3 fw-bold mb-2">Sign In 🚀</h2>
+              <p class="text-muted">
+                Enter your credentials faster than a Zamboni resurfaces ice!
+              </p>
+            </div>
+
+            <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+              <div class="alert alert-danger" *ngIf="error">
+                {{ error }}
+              </div>
+
+              <!-- Username Field -->
+              <div class="mb-3">
+                <label for="username" class="form-label fw-semibold">Username</label>
+                <input 
+                  type="text" 
+                  class="form-control"
+                  [class.is-invalid]="loginForm.get('username')?.invalid && loginForm.get('username')?.touched"
+                  id="username" 
+                  formControlName="username"
+                  placeholder="Your awesome username">
+                <div class="invalid-feedback">
+                  Please enter your username, buddy!
+                </div>
+              </div>
+
+              <!-- Password Field -->
+              <div class="mb-4">
+                <label for="password" class="form-label fw-semibold">Password</label>
+                <input 
+                  type="password" 
+                  class="form-control"
+                  [class.is-invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+                  id="password" 
+                  formControlName="password"
+                  placeholder="Your super secret password">
+                <div class="invalid-feedback">
+                  Please enter your password, eh!
+                </div>
+              </div>
+
+              <!-- Submit Button -->
+              <div class="d-grid gap-2 mb-4">
+                <button type="submit" class="btn btn-primary btn-lg" [disabled]="!loginForm.valid">
+                  <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status"></span>
+                  Sign In & Get Organized! 🎯
+                </button>
+              </div>
+
+              <!-- Quick Demo Login -->
+              <div class="text-center mb-3">
+                <small class="text-muted">
+                  For demo purposes, any username/password will work! 
+                </small>
+              </div>
+
+              <!-- Links -->
+              <div class="text-center">
+                <p class="mb-0">
+                  Don't have an account? 
+                  <button type="button" class="btn btn-link p-0" (click)="navigateToSignup()">
+                    Sign up here, eh! 🍁
+                  </button>
+                </p>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

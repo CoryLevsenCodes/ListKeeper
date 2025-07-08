@@ -1,0 +1,280 @@
+/* Signup Page Styles */
+
+.signup-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8fbff 0%, #e8f4fd 100%);
+}
+
+.signup-header {
+  background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+  color: white;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.fun-stats {
+  flex-wrap: wrap;
+}
+
+.stat-item {
+  text-align: center;
+  padding: 0 1rem;
+}
+
+.stat-number {
+  color: white;
+  font-weight: bold;
+  margin-bottom: 0;
+}
+
+.signup-card {
+  border: 1px solid #d6e9f7;
+  position: relative;
+  overflow: hidden;
+}
+
+.signup-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+}
+
+.form-label {
+  color: #2c5aa0;
+  margin-bottom: 0.5rem;
+  text-align: left;
+  display: block;
+}
+
+.form-control {
+  border: 2px solid #e8f4fd;
+  border-radius: 8px;
+  padding: 0.75rem;
+  transition: all 0.3s ease;
+  text-align: left;
+}
+
+.form-control:focus {
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 0.2rem rgba(74, 144, 226, 0.15);
+}
+
+.form-select {
+  border: 2px solid #e8f4fd;
+  border-radius: 8px;
+  padding: 0.75rem;
+  transition: all 0.3s ease;
+  text-align: left;
+}
+
+.form-select:focus {
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 0.2rem rgba(74, 144, 226, 0.15);
+}
+
+.form-check {
+  text-align: left;
+  display: flex;
+  align-items: flex-start;
+}
+
+.form-check-input {
+  border: 2px solid #d6e9f7;
+  margin-right: 0.5rem;
+  flex-shrink: 0;
+}
+
+.form-check-label {
+  text-align: left;
+  margin-left: 0.25rem;
+}
+
+.form-check-input:checked {
+  background-color: #4a90e2;
+  border-color: #4a90e2;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+  border: none;
+  border-radius: 12px;
+  padding: 1rem 2rem;
+  font-weight: 600;
+  box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(74, 144, 226, 0.4);
+  background: linear-gradient(135deg, #357abd 0%, #2c5aa0 100%);
+}
+
+.btn-primary:disabled {
+  opacity: 0.7;
+  transform: none;
+}
+
+.btn-link {
+  color: #4a90e2;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.btn-link:hover {
+  color: #357abd;
+  text-decoration: underline;
+}
+
+.btn-outline-warning {
+  border: 2px solid #ffc107;
+  color: #856404;
+  font-weight: 600;
+  border-radius: 12px;
+  padding: 0.75rem 2rem;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-warning:hover {
+  background-color: #ffc107;
+  border-color: #ffc107;
+  color: #000;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3);
+}
+
+.success-card {
+  border: 1px solid #d6e9f7;
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.success-icon {
+  animation: bounceIn 0.8s ease-out;
+}
+
+.support-section {
+  background: linear-gradient(45deg, #f8fbff, #ffffff);
+}
+
+.invalid-feedback {
+  color: #dc3545;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+.is-invalid {
+  border-color: #dc3545 !important;
+}
+
+.spinner-border-sm {
+  width: 1rem;
+  height: 1rem;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .signup-header {
+    padding: 3rem 0;
+  }
+  
+  .signup-header .display-5 {
+    font-size: 2rem;
+  }
+  
+  .fun-stats {
+    justify-content: center;
+    gap: 1rem;
+  }
+  
+  .stat-item {
+    padding: 0 0.5rem;
+  }
+  
+  .signup-card {
+    margin: 1rem;
+    padding: 2rem !important;
+  }
+  
+  .btn-lg {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+  }
+}
+
+/* Perfect left alignment for all form fields */
+.signup-card .row {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* Remove all Bootstrap column gutters for perfect alignment */
+.signup-card .row > .col-md-6 {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* Add only internal spacing between the two columns */
+.signup-card .row > .col-md-6:first-child {
+  padding-right: 0.75rem;
+}
+
+/* On mobile, stack normally with no special padding */
+@media (max-width: 767.98px) {
+  .signup-card .row > .col-md-6:first-child {
+    padding-right: 0;
+    margin-bottom: 1rem;
+  }
+}
+
+/* Ensure all form elements are left-aligned */
+.signup-card .mb-3,
+.signup-card .mb-4,
+.signup-card .form-label,
+.signup-card .form-control,
+.signup-card .form-select,
+.signup-card .invalid-feedback {
+  text-align: left;
+}
+
+/* Ensure input placeholders are left-aligned */
+.form-control::placeholder {
+  text-align: left;
+  opacity: 0.6;
+}
+
+.form-select option {
+  text-align: left;
+}

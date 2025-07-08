@@ -1,0 +1,55 @@
+<!-- The form is bound to the noteForm FormGroup in the component's TypeScript file. -->
+<form [formGroup]="noteForm" novalidate>
+  
+  <!-- Title Input -->
+  <div class="mb-3">
+    <label for="title" class="form-label">Title</label>
+    <input type="text" class="form-control" id="title" formControlName="title" required>
+    @if(noteForm.get('title')?.invalid && noteForm.get('title')?.touched) {
+      <div class="text-danger small mt-1">Title is required.</div>
+    }
+  </div>
+  
+  <!-- Content Textarea -->
+  <div class="mb-3">
+    <label for="content" class="form-label">Content</label>
+    <textarea class="form-control" id="content" rows="3" formControlName="content" required></textarea>
+    @if(noteForm.get('content')?.invalid && noteForm.get('content')?.touched) {
+      <div class="text-danger small mt-1">Content is required.</div>
+    }
+  </div>
+
+  <div class="row">
+    <!-- Due Date Calendar Control -->
+    <div class="col-md-6 mb-3">
+      <label for="dueDate" class="form-label">Due Date</label>
+      <input type="date" class="form-control" id="dueDate" formControlName="dueDate" required>
+    </div>
+
+    <!-- isCompleted Checkbox -->
+    <div class="col-md-6 d-flex align-items-center mb-3">
+      <div class="form-check mt-3">
+        <input class="form-check-input" type="checkbox" id="isCompleted" formControlName="isCompleted">
+        <label class="form-check-label" for="isCompleted">
+          Mark as Completed
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- NEW: Color Selector Swatches -->
+  <div class="mb-3">
+    <label class="form-label">Color</label>
+    <div class="color-selector-container">
+      @for(color of availableColors; track color) {
+        <div 
+          class="color-swatch"
+          [style.background-color]="color"
+          (click)="selectColor(color)"
+          [class.selected]="noteForm.get('color')?.value === color">
+        </div>
+      }
+    </div>
+  </div>
+
+</form>

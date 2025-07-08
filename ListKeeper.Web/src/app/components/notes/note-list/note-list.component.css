@@ -1,0 +1,42 @@
+/* --- Note List Component Styles --- */
+.card {
+   flex: 1;
+   padding-left: 50px;
+   padding-right: 50px;
+}
+
+.note-list-container {
+   display: grid;
+   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+   gap: 16px;
+   padding: 10px;
+}
+
+/* --- Search and Filter Styles --- */
+
+/* Wrapper for the search input to position the icon */
+.search-input-wrapper {
+    position: relative;
+    width: 250px; /* Adjust width as needed */
+}
+
+/* Style and position the search icon */
+.search-input-wrapper .fa-search {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+    color: #6c757d; /* Muted Bootstrap secondary color */
+    pointer-events: none; /* Icon doesn't block text selection */
+}
+
+/* Add padding to the input to prevent text from overlapping the icon */
+.search-input-wrapper input.form-control {
+    padding-right: 38px;
+}
+
+/* Make dropdown labels unselectable for a cleaner UX */
+.dropdown-menu .form-check-label {
+    cursor: pointer;
+    user-select: none;
+}

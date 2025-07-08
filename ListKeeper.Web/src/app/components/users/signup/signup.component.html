@@ -1,0 +1,255 @@
+<!-- Signup Page Container -->
+<div class="signup-container">
+  <!-- Header Section -->
+  <div class="signup-header text-center py-5">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <h1 class="display-5 fw-bold mb-3">
+            🎉 Welcome to the Coolest Community in Canada! 🍁
+          </h1>
+          <p class="lead mb-4">
+            You're about to join thousands of friendly Canadians who've discovered the joy of organized living! 
+            Our community is so welcoming, we practically roll out the red carpet (it's actually red and white, eh?).
+          </p>
+          <div class="fun-stats d-flex justify-content-center gap-4 mb-4">
+            <div class="stat-item">
+              <div class="stat-number h3 mb-0">🏒 10,000+</div>
+              <small class="text-muted">Happy Users</small>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number h3 mb-0">☕ 45,000+</div>
+              <small class="text-muted">Tim Hortons Runs Organized</small>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number h3 mb-0">🍁 100%</div>
+              <small class="text-muted">Canadian Approved</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Signup Form -->
+  <div class="signup-form-section py-5">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8">
+          
+          @if (!showSuccessMessage) {
+            <div class="signup-card p-5 bg-white rounded-4 shadow-lg">
+              <div class="text-center mb-4">
+                <h2 class="h3 fw-bold mb-2">Let's Get You Set Up! 🚀</h2>
+                <p class="text-muted">
+                  Fill out this form faster than a Zamboni resurfaces ice, and you'll be organizing like a pro!
+                </p>
+              </div>
+
+              <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+                <!-- Name Fields -->
+                <div class="row mb-3">
+                  <div class="col-md-6">
+                    <label for="firstName" class="form-label fw-semibold">First Name</label>
+                    <input 
+                      type="text" 
+                      class="form-control"
+                      [class.is-invalid]="signupForm.get('firstName')?.invalid && signupForm.get('firstName')?.touched"
+                      id="firstName" 
+                      formControlName="firstName"
+                      placeholder="Your awesome first name">
+                    <div class="invalid-feedback">
+                      Please enter your first name (at least 2 characters, eh?)
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="lastName" class="form-label fw-semibold">Last Name</label>
+                    <input 
+                      type="text" 
+                      class="form-control"
+                      [class.is-invalid]="signupForm.get('lastName')?.invalid && signupForm.get('lastName')?.touched"
+                      id="lastName" 
+                      formControlName="lastName"
+                      placeholder="Your fantastic last name">
+                    <div class="invalid-feedback">
+                      Please enter your last name (at least 2 characters, buddy!)
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Email Field -->
+                <div class="mb-3">
+                  <label for="email" class="form-label fw-semibold">Email Address</label>
+                  <input 
+                    type="email" 
+                    class="form-control"
+                    [class.is-invalid]="signupForm.get('email')?.invalid && signupForm.get('email')?.touched"
+                    id="email" 
+                    formControlName="email"
+                    placeholder="your.awesome.email@example.ca">
+                  <div class="invalid-feedback">
+                    Please enter a valid email address (we promise not to spam you with hockey updates!)
+                  </div>
+                </div>
+
+                <!-- Username Field -->
+                <div class="mb-3">
+                  <label for="username" class="form-label fw-semibold">Username</label>
+                  <input 
+                    type="text" 
+                    class="form-control"
+                    [class.is-invalid]="signupForm.get('username')?.invalid && signupForm.get('username')?.touched"
+                    id="username" 
+                    formControlName="username"
+                    placeholder="Choose something cool like 'MapleSyrupMaster'">
+                  <div class="invalid-feedback">
+                    Please choose a username (at least 3 characters, make it memorable!)
+                  </div>
+                </div>
+
+                <!-- Password Fields -->
+                <div class="row mb-3">
+                  <div class="col-md-6">
+                    <label for="password" class="form-label fw-semibold">Password</label>
+                    <input 
+                      type="password" 
+                      class="form-control"
+                      [class.is-invalid]="signupForm.get('password')?.invalid && signupForm.get('password')?.touched"
+                      id="password" 
+                      formControlName="password"
+                      placeholder="Super secret password">
+                    <div class="invalid-feedback">
+                      Password must be at least 6 characters (make it stronger than a hockey player!)
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="confirmPassword" class="form-label fw-semibold">Confirm Password</label>
+                    <input 
+                      type="password" 
+                      class="form-control"
+                      [class.is-invalid]="signupForm.get('confirmPassword')?.invalid && signupForm.get('confirmPassword')?.touched"
+                      id="confirmPassword" 
+                      formControlName="confirmPassword"
+                      placeholder="Type it again, just to be sure">
+                    <div class="invalid-feedback">
+                      Passwords must match (like a perfectly synchronized figure skating pair!)
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Fun Canadian Field -->
+                <div class="mb-4">
+                  <label for="favoriteTimHortonsItem" class="form-label fw-semibold">
+                    Favorite Tim Hortons Order 🍩 <small class="text-muted">(Optional but highly recommended)</small>
+                  </label>
+                  <select class="form-select" id="favoriteTimHortonsItem" formControlName="favoriteTimHortonsItem">
+                    <option value="Double-Double">Double-Double (Classic Choice!)</option>
+                    <option value="Triple-Triple">Triple-Triple (Bold Move!)</option>
+                    <option value="Black Coffee">Black Coffee (You're tough!)</option>
+                    <option value="Iced Capp">Iced Capp (Sweet Tooth Detected!)</option>
+                    <option value="Boston Cream">Boston Cream Donut (Excellent Taste!)</option>
+                    <option value="Timbits">Just Give Me All The Timbits</option>
+                    <option value="Other">Other (We Won't Judge... Much 😉)</option>
+                  </select>
+                </div>
+
+                <!-- Checkboxes -->
+                <div class="mb-3">
+                  <div class="form-check mb-2">
+                    <input 
+                      class="form-check-input" 
+                      type="checkbox" 
+                      [class.is-invalid]="signupForm.get('agreeToTerms')?.invalid && signupForm.get('agreeToTerms')?.touched"
+                      id="agreeToTerms" 
+                      formControlName="agreeToTerms">
+                    <label class="form-check-label" for="agreeToTerms">
+                      I agree to the <a href="#" class="text-primary">Terms of Service</a> and promise to be as polite as a typical Canadian 🇨🇦
+                    </label>
+                    <div class="invalid-feedback">
+                      Please agree to our terms (they're as friendly as we are!)
+                    </div>
+                  </div>
+                  
+                  <div class="form-check">
+                    <input 
+                      class="form-check-input" 
+                      type="checkbox" 
+                      id="wantsUpdates" 
+                      formControlName="wantsUpdates">
+                    <label class="form-check-label" for="wantsUpdates">
+                      Send me updates about new features and the occasional maple syrup recipe 🍁
+                    </label>
+                  </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="d-grid mb-4">
+                  <button 
+                    type="submit" 
+                    class="btn btn-primary btn-lg"
+                    [disabled]="isSubmitting">
+                    @if (isSubmitting) {
+                      <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                      Creating Your Awesome Account...
+                    } @else {
+                      🚀 Join the ListKeeper Family!
+                    }
+                  </button>
+                </div>
+
+                <!-- Back Button -->
+                <div class="text-center">
+                  <button type="button" class="btn btn-link" (click)="goBack()">
+                    ← Back to Home (No Hard Feelings!)
+                  </button>
+                </div>
+              </form>
+            </div>
+          } @else {
+            <!-- Success Message -->
+            <div class="success-card p-5 bg-white rounded-4 shadow-lg text-center">
+              <div class="success-icon mb-4">
+                <i class="fas fa-check-circle fa-5x text-success"></i>
+              </div>
+              <h2 class="h3 fw-bold mb-3">🎉 Welcome to the Family! 🇨🇦</h2>
+              <p class="lead mb-4">
+                Your account has been created successfully! You're now part of Canada's most organized and friendliest community.
+              </p>
+              <p class="text-muted mb-4">
+                We're redirecting you to your dashboard faster than a hockey puck across ice...
+              </p>
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </div>
+          }
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fun Support Section -->
+  <div class="support-section py-5 bg-light">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8 text-center">
+          <h3 class="fw-bold mb-3">❤️ Love What We're Building?</h3>
+          <p class="lead mb-4">
+            ListKeeper is 100% FREE and always will be! But if you're feeling extra generous 
+            and want to fuel our late-night coding sessions...
+          </p>
+          <button class="btn btn-outline-warning btn-lg" (click)="buyTimHortonsCoffee()">
+            ☕ Buy Us a Tim Hortons Coffee!
+          </button>
+          <p class="mt-3 text-muted">
+            <small>
+              🍁 Your support helps us keep the servers running and the maple syrup flowing! 
+              <br>Plus, caffeinated developers = better features for you!
+            </small>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

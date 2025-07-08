@@ -1,0 +1,28 @@
+/* Container for the color swatches */
+.color-selector-container {
+    display: flex;
+    gap: 10px; /* Provides spacing between the color circles */
+    flex-wrap: wrap; /* Allows colors to wrap to the next line on small screens */
+}
+
+/* Individual color swatch styling */
+.color-swatch {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%; /* Makes the swatches circular */
+    cursor: pointer;
+    border: 2px solid transparent; /* Placeholder for the selected border */
+    transition: transform 0.2s ease-in-out, border-color 0.2s ease-in-out;
+}
+
+/* Add a slight zoom effect on hover for better interactivity */
+.color-swatch:hover {
+    transform: scale(1.1);
+}
+
+/* Style for the currently selected color swatch */
+.color-swatch.selected {
+    border-color: #0d6efd; /* A standard blue to indicate selection */
+    box-shadow: 0 0 0 2px white, 0 0 0 4px #0d6efd; /* Creates a nice double border effect */
+    transform: scale(1.1);
+}

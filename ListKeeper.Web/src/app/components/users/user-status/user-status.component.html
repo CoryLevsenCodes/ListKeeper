@@ -1,0 +1,6 @@
+<div *ngIf="user; else loggedOut">
+  Welcome {{ user.firstname }} {{ user.lastname }}! <a href="#" (click)="logout()">Logout</a>
+</div>
+<ng-template #loggedOut>
+  <a href="#" (click)="login()" *ngIf="shouldShowLoginLink()">Login</a>
+</ng-template>

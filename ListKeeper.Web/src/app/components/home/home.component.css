@@ -1,0 +1,269 @@
+/* Home Component - Marketing Page Styles */
+
+.marketing-container {
+  min-height: 100vh;
+}
+
+.hero-section {
+  background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+  color: white;
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.hero-section .btn-primary {
+  background-color: #2c5aa0;
+  border-color: #2c5aa0;
+  box-shadow: 0 4px 15px rgba(44, 90, 160, 0.4);
+  transition: all 0.3s ease;
+  color: white;
+  font-weight: 600;
+}
+
+.hero-section .btn-primary:hover {
+  background-color: #1e3f73;
+  border-color: #1e3f73;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(30, 63, 115, 0.5);
+  color: white;
+}
+
+.hero-section .btn-outline-primary {
+  border-color: white;
+  color: white;
+  transition: all 0.3s ease;
+  background-color: transparent;
+  border-width: 2px;
+  font-weight: 600;
+}
+
+.hero-section .btn-outline-primary:hover {
+  background-color: white;
+  border-color: white;
+  color: #4a90e2;
+  transform: translateY(-2px);
+}
+
+.mockup-phone {
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.phone-content {
+  border: 3px solid #333;
+  border-radius: 25px;
+  background: #f8f9fa !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.phone-content::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 4px;
+  background-color: #333;
+  border-radius: 2px;
+}
+
+.mock-avatar {
+  background: linear-gradient(45deg, #4a90e2, #357abd) !important;
+}
+
+.mock-list-item {
+  transition: all 0.3s ease;
+  border: 1px solid #d6e9f7;
+  background-color: white;
+}
+
+.mock-list-item:hover {
+  transform: translateX(5px);
+  box-shadow: 0 2px 8px rgba(74, 144, 226, 0.15);
+  border-color: #4a90e2;
+}
+
+.features-section {
+  background: linear-gradient(45deg, #f8fbff, #e8f4fd);
+}
+
+.feature-card {
+  transition: all 0.3s ease;
+  border: 1px solid #d6e9f7;
+  background-color: white;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(74, 144, 226, 0.15) !important;
+  border-color: #4a90e2;
+}
+
+.feature-icon i {
+  transition: all 0.3s ease;
+  color: #4a90e2;
+}
+
+.feature-card:hover .feature-icon i {
+  transform: scale(1.1);
+  color: #357abd;
+}
+
+.step-circle {
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.step-circle:hover {
+  transform: scale(1.1);
+}
+
+.step-circle.bg-primary {
+  background-color: #4a90e2 !important;
+}
+
+.step-circle.bg-success {
+  background-color: #5cb3cc !important;
+}
+
+.step-circle.bg-warning {
+  background-color: #74a9d8 !important;
+  color: white !important;
+}
+
+.step-circle.bg-info {
+  background-color: #357abd !important;
+}
+
+.testimonial-card {
+  transition: all 0.3s ease;
+  border: 1px solid #d6e9f7;
+  background-color: white;
+}
+
+.testimonial-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(74, 144, 226, 0.12) !important;
+  border-color: #4a90e2;
+}
+
+.stars i {
+  margin-right: 2px;
+  color: #ffc107;
+}
+
+.cta-section {
+  background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+  color: white;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.cta-section .btn-light {
+  background-color: white;
+  border-color: white;
+  color: #4a90e2;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.cta-section .btn-light:hover {
+  background-color: #f8fbff;
+  color: #357abd;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255,255,255,0.3);
+}
+
+/* Testimonials Section Background */
+.testimonials-section {
+  background: linear-gradient(45deg, #f8fbff, #e8f4fd);
+}
+
+/* Avatar colors for testimonials */
+.testimonial-card .avatar.bg-primary {
+  background-color: #4a90e2 !important;
+}
+
+.testimonial-card .avatar.bg-success {
+  background-color: #5cb3cc !important;
+}
+
+.testimonial-card .avatar.bg-info {
+  background-color: #357abd !important;
+}
+
+/* How it works section */
+.how-it-works {
+  background-color: white;
+}
+
+/* Additional text contrast improvements */
+.hero-section h1,
+.hero-section h2,
+.hero-section p {
+  text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+}
+
+.cta-section h2,
+.cta-section p {
+  text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+}
+
+/* Ensure proper contrast for all text on colored backgrounds */
+.hero-section .text-primary {
+  color: white !important;
+}
+
+.hero-section .text-secondary {
+  color: #e8f4fd !important;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-section .container > div {
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.feature-card,
+.testimonial-card {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .hero-section {
+    min-height: auto;
+    padding: 60px 0;
+  }
+  
+  .hero-section .display-4 {
+    font-size: 2.5rem;
+  }
+  
+  .mockup-phone {
+    max-width: 250px;
+    margin-top: 40px;
+  }
+  
+  .d-flex.gap-3 {
+    flex-direction: column;
+    gap: 1rem !important;
+  }
+  
+  .btn-lg {
+    width: 100%;
+  }
+}
