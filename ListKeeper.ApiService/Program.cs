@@ -1,6 +1,7 @@
 // These 'using' statements are like importing libraries or modules in other languages.
 // They give us access to the classes and methods we need from the .NET framework and our own project files.
 //
+using ListKeeper.WebApi.EndPoints;
 using ListKeeperWebApi.WebApi.Data;          // Access to our DatabaseContext, UserRepository
 using ListKeeperWebApi.WebApi.Endpoints;     // Access to our endpoint mapping extension methods
 using ListKeeperWebApi.WebApi.Models;        // Access to our User model
@@ -63,6 +64,10 @@ builder.Services.AddHttpContextAccessor();
 //
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<INoteRepository, NoteRepository>();
+builder.Services.AddScoped<INoteService, NoteService>();
+
+
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -230,9 +235,9 @@ app.UseAuthorization();
 // The actual endpoint definitions are in the `Map...Endpoints()` extension methods.
 //
 app.MapGroup($"{routePrefix}/users").MapUserApiEndpoints();
+app.MapGroup($"{routePrefix}/notes").MapNoteApiEndpoints();
 
 // This is the final command that starts the web server and makes it listen for incoming requests.
 // The application will run until you stop it.
 //
 app.Run();
-

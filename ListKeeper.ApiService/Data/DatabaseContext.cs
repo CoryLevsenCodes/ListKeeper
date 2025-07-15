@@ -1,3 +1,4 @@
+using ListKeeper.ApiService.Models;
 using ListKeeperWebApi.WebApi.Models;
 using ListKeeperWebApi.WebApi.Models.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -39,6 +40,8 @@ namespace ListKeeperWebApi.WebApi.Data
         /// Gets or sets the users DbSet
         /// </summary>
         public DbSet<User> Users { get; set; }
+
+        public DbSet<Note> Notes { get; set; }
 
         /// <summary>
         /// Configure the model that was discovered by convention from the entity types
