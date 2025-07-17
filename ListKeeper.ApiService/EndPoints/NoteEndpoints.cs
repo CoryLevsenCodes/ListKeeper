@@ -15,6 +15,33 @@ namespace ListKeeperWebApi.WebApi.Endpoints
                  .WithDescription("Gets all notes")
                  .RequireAuthorization("Admin");
 
+            // DO THIS OVER THE WEEKEND - CREATE, UPDATE, DELETE
+
+            //group.MapGet("/{userId}", GetUser)
+            //     .WithName("GetUser")
+            //     .WithDescription("Gets a user by their ID")
+            //     .RequireAuthorization("Admin");
+
+            //group.MapPost("/", CreateUser)
+            //     .WithName("CreateUser")
+            //     .WithDescription("Creates a new user")
+            //     .RequireAuthorization("Admin");
+
+            //group.MapPut("/{userId}", UpdateUser)
+            //     .WithName("UpdateUser")
+            //     .WithDescription("Updates an existing user")
+            //     .RequireAuthorization("Admin");
+
+            //group.MapDelete("/{userId}", DeleteUser)
+            //     .WithName("DeleteUser")
+            //     .WithDescription("Deletes a user")
+            //     .RequireAuthorization("Admin");
+
+            //group.MapPost("/Authenticate", Authenticate)
+            //     .WithName("Authenticate")
+            //     .WithDescription("Authenticates a user and returns a token")
+            //     .AllowAnonymous();
+
             return group;
         }
 
