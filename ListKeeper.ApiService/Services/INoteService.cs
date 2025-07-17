@@ -1,12 +1,10 @@
-﻿// These 'using' statements import necessary namespaces.
+﻿using ListKeeper.ApiService.Models.ViewModels;
 
-using ListKeeper.ApiService.Models.ViewModels;
-
-namespace ListKeeperWebApi.WebApi.Services
+namespace ListKeeper.ApiService.Services.ListKeeperWebApi.WebApi.Services
 {
     public interface INoteService
     {
-        Task<NoteViewModel?> CreateNoteAsync(NoteViewModel NoteVm);
+        Task<NoteViewModel?> CreateNoteAsync(NoteViewModel createNoteVm);
         Task<bool> DeleteNoteAsync(int id);
         Task<bool> DeleteNoteAsync(NoteViewModel noteVm);
         Task<IEnumerable<NoteViewModel>> GetAllNotesAsync();

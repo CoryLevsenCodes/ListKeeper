@@ -1,4 +1,5 @@
-﻿using ListKeeper.ApiService.Models;
+﻿// These 'using' statements import necessary namespaces from the .NET framework and our project.
+using ListKeeper.ApiService.Models;
 
 namespace ListKeeperWebApi.WebApi.Data
 {

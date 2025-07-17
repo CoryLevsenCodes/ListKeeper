@@ -90,7 +90,7 @@ The first time you run the Api, if there are 0 rows in the User Table, a new Adm
         {
             Username = "admin",
             Email = "admin@ListKeeper..com",
-            Password = "AppleRocks!", // This will be hashed by the service.
+            Password = "AppleLaptops!Rock100", // This will be hashed by the service.
             Role = "Admin",
             Firstname = "Admin",
             Lastname = "User"

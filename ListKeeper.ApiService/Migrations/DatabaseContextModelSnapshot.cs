@@ -53,7 +53,7 @@ namespace ListKeeper.ApiService.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Notes");
+                    b.ToTable("Note");
                 });
 
             modelBuilder.Entity("ListKeeperWebApi.WebApi.Models.User", b =>

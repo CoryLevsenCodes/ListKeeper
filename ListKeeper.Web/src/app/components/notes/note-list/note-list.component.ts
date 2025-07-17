@@ -178,77 +178,85 @@ export class NoteListComponent implements OnInit, AfterViewInit, OnDestroy {
   public refreshNotes(searchTerm: string = '', statuses?: any): void {
     console.log('Refreshing notes with filters:', { searchTerm, statuses });
     
+    this.noteService.getAll().subscribe({
+      next: (data: Note[]) => {
+        this.notes = data;
+      },
+      error: (error) => {
+        console.error('Error loading notes:', error);
+      }
+    });
     // Get all notes from the service
-    let allNotes = this.noteService.getNotes();
+    // let allNotes = this.noteService.getAll();
     
-    // Apply search filter if searchTerm is provided
-    if (searchTerm && searchTerm.length > 0) {
-      allNotes = allNotes.filter(note => 
-        note.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        note.content.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
+    // // Apply search filter if searchTerm is provided
+    // // if (searchTerm && searchTerm.length > 0) {
+    // //   allNotes = allNotes.filter(note => 
+    // //     note.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    // //     note.content.toLowerCase().includes(searchTerm.toLowerCase())
+    // //   );
+    // // }
     
-    // Apply status filters if statuses are provided
-    if (statuses) {
-      const today = new Date();
-      today.setHours(0, 0, 0, 0); // Set to start of day for accurate comparison
+    // // Apply status filters if statuses are provided
+    // if (statuses) {
+    //   const today = new Date();
+    //   today.setHours(0, 0, 0, 0); // Set to start of day for accurate comparison
       
-      let filteredNotes: Note[] = [];
+    //   let filteredNotes: Note[] = [];
       
-      // Check which statuses are selected
-      const selectedStatuses = Object.keys(statuses).filter(key => statuses[key]);
+    //   // Check which statuses are selected
+    //   const selectedStatuses = Object.keys(statuses).filter(key => statuses[key]);
       
       // If 'All' is selected or no specific statuses are selected, show all notes
-      if (selectedStatuses.includes('All') || selectedStatuses.length === 0) {
-        filteredNotes = allNotes;
-      } else {
-        // Filter based on selected statuses
-        allNotes.forEach(note => {
-          const noteDate = new Date(note.dueDate);
-          noteDate.setHours(0, 0, 0, 0); // Set to start of day for accurate comparison
+  //     if (selectedStatuses.includes('All') || selectedStatuses.length === 0) {
+  //       filteredNotes = allNotes;
+  //     } else {
+  //       // Filter based on selected statuses
+  //       allNotes.forEach(note => {
+  //         const noteDate = new Date(note.dueDate);
+  //         noteDate.setHours(0, 0, 0, 0); // Set to start of day for accurate comparison
           
-          let shouldInclude = false;
+  //         let shouldInclude = false;
           
-          // Check each selected status
-          selectedStatuses.forEach(status => {
-            switch (status) {
-              case 'Upcoming':
-                // Upcoming: due date is greater than today and not completed
-                if (noteDate > today && !note.isCompleted) {
-                  shouldInclude = true;
-                }
-                break;
+  //         // Check each selected status
+  //         selectedStatuses.forEach(status => {
+  //           switch (status) {
+  //             case 'Upcoming':
+  //               // Upcoming: due date is greater than today and not completed
+  //               if (noteDate > today && !note.isCompleted) {
+  //                 shouldInclude = true;
+  //               }
+  //               break;
                 
-              case 'Past Due':
-                // Past Due: due date is less than or equal to today and not completed
-                if (noteDate <= today && !note.isCompleted) {
-                  shouldInclude = true;
-                }
-                break;
+  //             case 'Past Due':
+  //               // Past Due: due date is less than or equal to today and not completed
+  //               if (noteDate <= today && !note.isCompleted) {
+  //                 shouldInclude = true;
+  //               }
+  //               break;
                 
-              case 'Completed':
-                // Completed: isCompleted is true regardless of date
-                if (note.isCompleted) {
-                  shouldInclude = true;
-                }
-                break;
-            }
-          });
+  //             case 'Completed':
+  //               // Completed: isCompleted is true regardless of date
+  //               if (note.isCompleted) {
+  //                 shouldInclude = true;
+  //               }
+  //               break;
+  //           }
+  //         });
           
-          if (shouldInclude) {
-            filteredNotes.push(note);
-          }
-        });
-      }
+  //         if (shouldInclude) {
+  //           filteredNotes.push(note);
+  //         }
+  //       });
+  //     }
       
-      this.notes = filteredNotes;
-    } else {
-      this.notes = allNotes;
-    }
+  //     this.notes = filteredNotes;
+  //   } else {
+  //     this.notes = allNotes;
+  //   }
     
-    console.log('Filtered notes:', this.notes.length, 'out of', this.noteService.getNotes().length);
-  }
+  //   console.log('Filtered notes:', this.notes.length, 'out of', this.noteService.getNotes().length);
+}
 
   public openAddNoteModal(): void {
     this.modalInstance?.show();
@@ -271,7 +279,7 @@ export class NoteListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   confirmDelete(): void {
     if (this.currentDeletingNote) {
-      this.noteService.deleteNote(this.currentDeletingNote.id);
+      this.noteService.delete(this.currentDeletingNote.id);
       this.refreshNotes(this.currentSearchTerm, this.statusForm.value);
       this.deleteModalInstance?.hide();
       this.currentDeletingNote = null;

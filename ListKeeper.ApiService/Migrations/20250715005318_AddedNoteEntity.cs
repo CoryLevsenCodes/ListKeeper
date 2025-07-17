@@ -6,13 +6,13 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ListKeeper.ApiService.Migrations
 {
     /// <inheritdoc />
-    public partial class AddNoteDBTable : Migration
+    public partial class AddedNoteEntity : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Notes",
+                name: "Note",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -25,7 +25,7 @@ namespace ListKeeper.ApiService.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Notes", x => x.Id);
+                    table.PrimaryKey("PK_Note", x => x.Id);
                 });
         }
 
@@ -33,7 +33,7 @@ namespace ListKeeper.ApiService.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Notes");
+                name: "Note");
         }
     }
 }

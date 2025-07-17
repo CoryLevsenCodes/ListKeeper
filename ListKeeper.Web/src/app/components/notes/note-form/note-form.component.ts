@@ -88,7 +88,7 @@ export class NoteFormComponent implements OnInit, OnChanges {
 
   public addNote(): void {
     if (this.noteForm.valid) {
-      this.noteService.addNote(this.noteForm.value);
+      // this.noteService.addNote(this.noteForm.value);
       this.resetForm();
     } else {
       this.noteForm.markAllAsTouched();
@@ -102,7 +102,7 @@ export class NoteFormComponent implements OnInit, OnChanges {
         ...this.noteForm.value,
         dueDate: new Date(this.noteForm.value.dueDate)
       };
-      this.noteService.updateNote(updatedNote);
+      // this.noteService.updateNote(updatedNote);
     } else {
       this.noteForm.markAllAsTouched();
     }

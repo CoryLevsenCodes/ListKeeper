@@ -70,6 +70,8 @@ namespace ListKeeperWebApi.WebApi.Services
                 Password = hashedPassword // Store the hashed password, never the original.
             };
 
+            // business rules checking
+
             // Delegate the actual database "add" operation to the repository.
             var createdUser = await _repo.AddAsync(user);
             return createdUser?.ToViewModel();
