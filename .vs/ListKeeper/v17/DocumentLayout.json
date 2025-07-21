@@ -3,18 +3,6 @@
   "WorkspaceRootPath": "C:\\Users\\studentavd\\source\\repos\\ListKeeper\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{573DE713-C139-886C-CE6E-72FE3AEA929E}|ListKeeper.ApiService\\ListKeeper.ApiService.csproj|c:\\users\\studentavd\\source\\repos\\listkeeper\\listkeeper.apiservice\\models\\note.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{573DE713-C139-886C-CE6E-72FE3AEA929E}|ListKeeper.ApiService\\ListKeeper.ApiService.csproj|solutionrelative:listkeeper.apiservice\\models\\note.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{573DE713-C139-886C-CE6E-72FE3AEA929E}|ListKeeper.ApiService\\ListKeeper.ApiService.csproj|c:\\users\\studentavd\\source\\repos\\listkeeper\\listkeeper.apiservice\\services\\noteservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{573DE713-C139-886C-CE6E-72FE3AEA929E}|ListKeeper.ApiService\\ListKeeper.ApiService.csproj|solutionrelative:listkeeper.apiservice\\services\\noteservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{573DE713-C139-886C-CE6E-72FE3AEA929E}|ListKeeper.ApiService\\ListKeeper.ApiService.csproj|c:\\users\\studentavd\\source\\repos\\listkeeper\\listkeeper.apiservice\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{573DE713-C139-886C-CE6E-72FE3AEA929E}|ListKeeper.ApiService\\ListKeeper.ApiService.csproj|solutionrelative:listkeeper.apiservice\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{573DE713-C139-886C-CE6E-72FE3AEA929E}|ListKeeper.ApiService\\ListKeeper.ApiService.csproj|c:\\users\\studentavd\\source\\repos\\listkeeper\\listkeeper.apiservice\\endpoints\\noteendpoints.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{573DE713-C139-886C-CE6E-72FE3AEA929E}|ListKeeper.ApiService\\ListKeeper.ApiService.csproj|solutionrelative:listkeeper.apiservice\\endpoints\\noteendpoints.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -23,16 +11,16 @@
       "RelativeMoniker": "D:0:0:{573DE713-C139-886C-CE6E-72FE3AEA929E}|ListKeeper.ApiService\\ListKeeper.ApiService.csproj|solutionrelative:listkeeper.apiservice\\endpoints\\userendpoints.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{573DE713-C139-886C-CE6E-72FE3AEA929E}|ListKeeper.ApiService\\ListKeeper.ApiService.csproj|c:\\users\\studentavd\\source\\repos\\listkeeper\\listkeeper.apiservice\\data\\inoterepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{573DE713-C139-886C-CE6E-72FE3AEA929E}|ListKeeper.ApiService\\ListKeeper.ApiService.csproj|solutionrelative:listkeeper.apiservice\\data\\inoterepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{573DE713-C139-886C-CE6E-72FE3AEA929E}|ListKeeper.ApiService\\ListKeeper.ApiService.csproj|c:\\users\\studentavd\\source\\repos\\listkeeper\\listkeeper.apiservice\\services\\noteservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{573DE713-C139-886C-CE6E-72FE3AEA929E}|ListKeeper.ApiService\\ListKeeper.ApiService.csproj|solutionrelative:listkeeper.apiservice\\services\\noteservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{573DE713-C139-886C-CE6E-72FE3AEA929E}|ListKeeper.ApiService\\ListKeeper.ApiService.csproj|c:\\users\\studentavd\\source\\repos\\listkeeper\\listkeeper.apiservice\\models\\viewmodels\\noteviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{573DE713-C139-886C-CE6E-72FE3AEA929E}|ListKeeper.ApiService\\ListKeeper.ApiService.csproj|solutionrelative:listkeeper.apiservice\\models\\viewmodels\\noteviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{573DE713-C139-886C-CE6E-72FE3AEA929E}|ListKeeper.ApiService\\ListKeeper.ApiService.csproj|c:\\users\\studentavd\\source\\repos\\listkeeper\\listkeeper.apiservice\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{573DE713-C139-886C-CE6E-72FE3AEA929E}|ListKeeper.ApiService\\ListKeeper.ApiService.csproj|solutionrelative:listkeeper.apiservice\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{573DE713-C139-886C-CE6E-72FE3AEA929E}|ListKeeper.ApiService\\ListKeeper.ApiService.csproj|c:\\users\\studentavd\\source\\repos\\listkeeper\\listkeeper.apiservice\\readme.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
-      "RelativeMoniker": "D:0:0:{573DE713-C139-886C-CE6E-72FE3AEA929E}|ListKeeper.ApiService\\ListKeeper.ApiService.csproj|solutionrelative:listkeeper.apiservice\\readme.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+      "AbsoluteMoniker": "D:0:0:{573DE713-C139-886C-CE6E-72FE3AEA929E}|ListKeeper.ApiService\\ListKeeper.ApiService.csproj|c:\\users\\studentavd\\source\\repos\\listkeeper\\listkeeper.apiservice\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{573DE713-C139-886C-CE6E-72FE3AEA929E}|ListKeeper.ApiService\\ListKeeper.ApiService.csproj|solutionrelative:listkeeper.apiservice\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -47,100 +35,68 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "Note.cs",
-              "DocumentMoniker": "C:\\Users\\studentavd\\source\\repos\\ListKeeper\\ListKeeper.ApiService\\Models\\Note.cs",
-              "RelativeDocumentMoniker": "ListKeeper.ApiService\\Models\\Note.cs",
-              "ToolTip": "C:\\Users\\studentavd\\source\\repos\\ListKeeper\\ListKeeper.ApiService\\Models\\Note.cs",
-              "RelativeToolTip": "ListKeeper.ApiService\\Models\\Note.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAcAAAARAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-16T22:47:55.297Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "NoteService.cs",
-              "DocumentMoniker": "C:\\Users\\studentavd\\source\\repos\\ListKeeper\\ListKeeper.ApiService\\Services\\NoteService.cs",
-              "RelativeDocumentMoniker": "ListKeeper.ApiService\\Services\\NoteService.cs",
-              "ToolTip": "C:\\Users\\studentavd\\source\\repos\\ListKeeper\\ListKeeper.ApiService\\Services\\NoteService.cs",
-              "RelativeToolTip": "ListKeeper.ApiService\\Services\\NoteService.cs",
-              "ViewState": "AgIAAGIAAAAAAAAAAAAIwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-15T01:36:36.69Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\studentavd\\source\\repos\\ListKeeper\\ListKeeper.ApiService\\Program.cs",
-              "RelativeDocumentMoniker": "ListKeeper.ApiService\\Program.cs",
-              "ToolTip": "C:\\Users\\studentavd\\source\\repos\\ListKeeper\\ListKeeper.ApiService\\Program.cs",
-              "RelativeToolTip": "ListKeeper.ApiService\\Program.cs",
-              "ViewState": "AgIAAOQAAAAAAAAAAAAhwO0AAAA7AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-15T01:29:57.764Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "NoteViewModel.cs",
-              "DocumentMoniker": "C:\\Users\\studentavd\\source\\repos\\ListKeeper\\ListKeeper.ApiService\\Models\\ViewModels\\NoteViewModel.cs",
-              "RelativeDocumentMoniker": "ListKeeper.ApiService\\Models\\ViewModels\\NoteViewModel.cs",
-              "ToolTip": "C:\\Users\\studentavd\\source\\repos\\ListKeeper\\ListKeeper.ApiService\\Models\\ViewModels\\NoteViewModel.cs",
-              "RelativeToolTip": "ListKeeper.ApiService\\Models\\ViewModels\\NoteViewModel.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-15T00:59:39.451Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "INoteRepository.cs",
-              "DocumentMoniker": "C:\\Users\\studentavd\\source\\repos\\ListKeeper\\ListKeeper.ApiService\\Data\\INoteRepository.cs",
-              "RelativeDocumentMoniker": "ListKeeper.ApiService\\Data\\INoteRepository.cs",
-              "ToolTip": "C:\\Users\\studentavd\\source\\repos\\ListKeeper\\ListKeeper.ApiService\\Data\\INoteRepository.cs",
-              "RelativeToolTip": "ListKeeper.ApiService\\Data\\INoteRepository.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-15T00:58:02.154Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "readme.md",
-              "DocumentMoniker": "C:\\Users\\studentavd\\source\\repos\\ListKeeper\\ListKeeper.ApiService\\readme.md",
-              "RelativeDocumentMoniker": "ListKeeper.ApiService\\readme.md",
-              "ToolTip": "C:\\Users\\studentavd\\source\\repos\\ListKeeper\\ListKeeper.ApiService\\readme.md",
-              "RelativeToolTip": "ListKeeper.ApiService\\readme.md",
-              "ViewState": "AgIAABUAAAAAAAAAAAAAADMAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
-              "WhenOpened": "2025-07-15T00:46:44.038Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
               "Title": "NoteEndpoints.cs",
               "DocumentMoniker": "C:\\Users\\studentavd\\source\\repos\\ListKeeper\\ListKeeper.ApiService\\EndPoints\\NoteEndpoints.cs",
               "RelativeDocumentMoniker": "ListKeeper.ApiService\\EndPoints\\NoteEndpoints.cs",
               "ToolTip": "C:\\Users\\studentavd\\source\\repos\\ListKeeper\\ListKeeper.ApiService\\EndPoints\\NoteEndpoints.cs",
               "RelativeToolTip": "ListKeeper.ApiService\\EndPoints\\NoteEndpoints.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAdAAAAAAAAAA==",
+              "ViewState": "AgIAACQAAAAAAAAAAAAAABYAAAAyAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-15T00:26:30.027Z"
+              "WhenOpened": "2025-07-16T23:16:59.087Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\studentavd\\source\\repos\\ListKeeper\\ListKeeper.ApiService\\appsettings.json",
+              "RelativeDocumentMoniker": "ListKeeper.ApiService\\appsettings.json",
+              "ToolTip": "C:\\Users\\studentavd\\source\\repos\\ListKeeper\\ListKeeper.ApiService\\appsettings.json",
+              "RelativeToolTip": "ListKeeper.ApiService\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-07-16T23:44:43.983Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 4,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\studentavd\\source\\repos\\ListKeeper\\ListKeeper.ApiService\\Program.cs",
+              "RelativeDocumentMoniker": "ListKeeper.ApiService\\Program.cs",
+              "ToolTip": "C:\\Users\\studentavd\\source\\repos\\ListKeeper\\ListKeeper.ApiService\\Program.cs",
+              "RelativeToolTip": "ListKeeper.ApiService\\Program.cs",
+              "ViewState": "AgIAANMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-16T23:44:06.89Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "UserEndpoints.cs",
               "DocumentMoniker": "C:\\Users\\studentavd\\source\\repos\\ListKeeper\\ListKeeper.ApiService\\EndPoints\\UserEndpoints.cs",
               "RelativeDocumentMoniker": "ListKeeper.ApiService\\EndPoints\\UserEndpoints.cs",
               "ToolTip": "C:\\Users\\studentavd\\source\\repos\\ListKeeper\\ListKeeper.ApiService\\EndPoints\\UserEndpoints.cs",
               "RelativeToolTip": "ListKeeper.ApiService\\EndPoints\\UserEndpoints.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAKAAAAAAAAAA==",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAAB4AAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-15T00:25:29.808Z"
+              "WhenOpened": "2025-07-16T23:43:20.421Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "NoteService.cs",
+              "DocumentMoniker": "C:\\Users\\studentavd\\source\\repos\\ListKeeper\\ListKeeper.ApiService\\Services\\NoteService.cs",
+              "RelativeDocumentMoniker": "ListKeeper.ApiService\\Services\\NoteService.cs",
+              "ToolTip": "C:\\Users\\studentavd\\source\\repos\\ListKeeper\\ListKeeper.ApiService\\Services\\NoteService.cs",
+              "RelativeToolTip": "ListKeeper.ApiService\\Services\\NoteService.cs",
+              "ViewState": "AgIAACUAAAAAAAAAAAAgwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-16T23:42:11.06Z",
+              "EditorCaption": ""
             }
           ]
         }
