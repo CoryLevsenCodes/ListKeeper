@@ -6,4 +6,3 @@ export interface Note {
   isCompleted: Boolean;
   color: string;
 }
- 

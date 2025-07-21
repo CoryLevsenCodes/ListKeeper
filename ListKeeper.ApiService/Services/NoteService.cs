@@ -124,8 +124,6 @@ namespace ListKeeperWebApi.WebApi.Services
             var note = await _repo.GetByIdAsync(id);
             return note?.ToViewModel();
         }
-
-
     }
 }
 

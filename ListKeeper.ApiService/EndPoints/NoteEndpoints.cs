@@ -23,7 +23,7 @@ namespace ListKeeperWebApi.WebApi.Endpoints
 
             // DO THIS OVER THE WEEKEND - CREATE, UPDATE, DELETE
 
-            group.MapGet("/{userId}", GetNote)
+            group.MapGet("/{noteId}", GetNote)
                  .WithName("GetNote")
                  .WithDescription("Gets a note by their ID")
                  .RequireAuthorization("Admin");
@@ -33,12 +33,12 @@ namespace ListKeeperWebApi.WebApi.Endpoints
                  .WithDescription("Creates a new note")
                  .RequireAuthorization("Admin");
 
-            group.MapPut("/{userId}", UpdateNote)
+            group.MapPut("/{noteId}", UpdateNote)
                  .WithName("UpdateNote")
                  .WithDescription("Updates an existing note")
                  .RequireAuthorization("Admin");
 
-            group.MapDelete("/{userId}", DeleteNote)
+            group.MapDelete("/{noteId}", DeleteNote)
                  .WithName("DeleteNote")
                  .WithDescription("Deletes a note")
                  .RequireAuthorization("Admin");
@@ -100,7 +100,7 @@ namespace ListKeeperWebApi.WebApi.Endpoints
                 var newNote = await noteService.CreateNoteAsync(noteVM);
                 if (newNote == null)
                 {
-                    return Results.Conflict($"Could not create note. Email {noteVM.Title} may already be in use.");
+                    return Results.Conflict($"Could not create note. Title {noteVM.Title} may already be in use.");
                 }
                 return Results.Created($"/api/notes/{newNote.Id}", newNote);
             }
