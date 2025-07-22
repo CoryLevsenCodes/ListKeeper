@@ -9,7 +9,7 @@ import { environment } from '../../environments/environment';
 export class NoteService {
   private baseApiUrl = environment.baseApiUrl;
   constructor(private http: HttpClient) { }
-  
+
   getAll(): Observable<Note[]> {
     // The backend returns { notes: Note[] }, so we need to extract the notes array
     return this.http.get<{ notes: Note[] }>(`${this.baseApiUrl}/notes`)
