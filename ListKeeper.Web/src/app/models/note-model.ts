@@ -3,6 +3,7 @@ export interface Note {
   title: string;
   content: string;
   dueDate: Date;
-  isCompleted: Boolean;
+  isCompleted: boolean; 
   color: string;
 }
+ 

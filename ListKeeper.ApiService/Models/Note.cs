@@ -5,7 +5,7 @@ using System.Numerics;
 
 namespace ListKeeper.ApiService.Models
 {
-    [Table("Notes")]
+    [Table("Note")]
     public class Note
     {
         [Key]

@@ -1,5 +1,4 @@
-﻿
-using global::ListKeeperWebApi.WebApi.Data;
+﻿using global::ListKeeperWebApi.WebApi.Data;
 using ListKeeper.ApiService.Models;
 using ListKeeper.ApiService.Models.Extensions;
 using ListKeeper.ApiService.Models.ViewModels;
@@ -94,7 +93,7 @@ namespace ListKeeperWebApi.WebApi.Services
             // The `?.` is a null-conditional operator. If 'notes' is null, it won't throw an error.
             // The `??` is a null-coalescing operator.
             // If the result of the Select is null, it returns an empty list instead.
-            return notes?.Select(u => u.ToViewModel()) ?? Enumerable.Empty<NoteViewModel>();
+            return notes?.Select(u => u.ToViewModel()).Where(vm => vm != null).Cast<NoteViewModel>() ?? Enumerable.Empty<NoteViewModel>();
         }
 
         /// <summary>
@@ -113,6 +112,7 @@ namespace ListKeeperWebApi.WebApi.Services
             if (noteVm == null) return false;
             // The `ToDomain()` extension method converts the view model back to a database entity.
             var note = noteVm.ToDomain();
+            if (note == null) return false;
             return await _repo.Delete(note);
         }
 
@@ -124,6 +124,28 @@ namespace ListKeeperWebApi.WebApi.Services
             var note = await _repo.GetByIdAsync(id);
             return note?.ToViewModel();
         }
+
+        /// <summary>
+        /// Retrieves notes based on search criteria including text search, completion status, and due date filters.
+        /// </summary>
+        public async Task<IEnumerable<NoteViewModel>> GetAllNotesBySearchCriteriaAsync(SearchCriteriaViewModel searchCriteria)
+        {
+            // If "All" status is selected (0) or no statuses provided, and no other filters, use the simple GetAll
+            if ((searchCriteria.Statuses.Contains(0) || searchCriteria.Statuses.Length == 0) &&
+                string.IsNullOrWhiteSpace(searchCriteria.SearchText) &&
+                !searchCriteria.ShowOnlyCompleted.HasValue)
+            {
+                return await GetAllNotesAsync();
+            }
+
+            // Convert ViewModel to domain model for repository layer
+            var domainSearchCriteria = searchCriteria.ToDomain();
+            
+            // Use the optimized repository method that builds efficient database queries
+            var notes = await _repo.GetBySearchCriteriaAsync(domainSearchCriteria);
+            return notes?.Select(n => n.ToViewModel()).Where(vm => vm != null).Cast<NoteViewModel>() ?? Enumerable.Empty<NoteViewModel>();
+        }
+
     }
 }
 

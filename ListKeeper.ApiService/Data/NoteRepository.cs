@@ -1,14 +1,5 @@
-﻿// These 'using' statements import necessary namespaces from the .NET framework and our project.
-using Microsoft.EntityFrameworkCore;         // The main library for Entity Framework Core, our Object-Relational Mapper (ORM).
-using Microsoft.Extensions.Configuration;      // Provides access to the application's configuration (appsettings.json).
-using Microsoft.Extensions.Logging;            // Provides logging capabilities.
-using Microsoft.IdentityModel.Tokens;        // Contains classes for creating and validating security tokens (JWTs).
-using System.IdentityModel.Tokens.Jwt;         // The main library for handling JSON Web Tokens.
-using System.Security.Claims;                  // Allows us to create claims (pieces of information) about a note.
-using System.Text;                             // Provides text encoding functionalities (e.g., UTF8).
-using ListKeeperWebApi.WebApi.Models;          // Access to our main 'Note' domain model.
-using ListKeeperWebApi.WebApi.Models.Interfaces;
-using ListKeeper.ApiService.Models; // Access to the INoteRepository interface.
+﻿using Microsoft.EntityFrameworkCore;        // The main library for Entity Framework Core, our Object-Relational Mapper (ORM).
+using ListKeeper.ApiService.Models;         // Access to the INoteRepository interface.
 
 namespace ListKeeperWebApi.WebApi.Data
 {
@@ -164,6 +155,55 @@ namespace ListKeeperWebApi.WebApi.Data
                 throw;
             }
         }
+
+        /// <summary>
+        /// Retrieves notes based on search criteria using database-level filtering for optimal performance.
+        /// </summary>
+        public async Task<IEnumerable<Note>> GetBySearchCriteriaAsync(SearchCriteria searchCriteria)
+        {
+            _logger.LogInformation("Attempting to get notes by search criteria");
+            try
+            {
+                var query = _context.Notes.AsQueryable();
+                var today = DateTime.Today;
+
+                // Filter by search text if provided
+                if (!string.IsNullOrWhiteSpace(searchCriteria.SearchText))
+                {
+                    var searchText = searchCriteria.SearchText.ToLowerInvariant();
+                    query = query.Where(n => 
+                        n.Title.ToLower().Contains(searchText) || 
+                        n.Content.ToLower().Contains(searchText));
+                }
+
+                // Filter by completion status if specified
+                if (searchCriteria.ShowOnlyCompleted.HasValue)
+                {
+                    query = query.Where(n => n.IsCompleted == searchCriteria.ShowOnlyCompleted.Value);
+                }
+
+                // Filter by statuses if not "All" (0=All, 1=Upcoming, 2=Past Due, 3=Completed)
+                if (searchCriteria.Statuses.Length > 0 && !searchCriteria.Statuses.Contains(0))
+                {
+                    var hasUpcoming = searchCriteria.Statuses.Contains(1);
+                    var hasPastDue = searchCriteria.Statuses.Contains(2);
+                    var hasCompleted = searchCriteria.Statuses.Contains(3);
+
+                    query = query.Where(n => 
+                        (hasUpcoming && n.DueDate.Date > today && !n.IsCompleted) ||
+                        (hasPastDue && n.DueDate.Date < today && !n.IsCompleted) ||
+                        (hasCompleted && n.IsCompleted));
+                }
+
+                return await query.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while getting notes by search criteria");
+                throw;
+            }
+        }
+
     }
 
 }

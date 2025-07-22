@@ -135,8 +135,8 @@ namespace ListKeeperWebApi.WebApi.Services
             var users = await _repo.GetAllAsync();
             // The `?.` is a null-conditional operator. If 'users' is null, it won't throw an error.
             // The `??` is a null-coalescing operator.
-            // If the result of the Select is null, it returns an empty list instead.
-            return users?.Select(u => u.ToViewModel()) ?? Enumerable.Empty<UserViewModel>();
+            // Filter out any null results from ToViewModel() and return non-nullable collection
+            return users?.Select(u => u.ToViewModel()).Where(vm => vm != null).Cast<UserViewModel>() ?? Enumerable.Empty<UserViewModel>();
         }
 
         /// <summary>
@@ -155,6 +155,7 @@ namespace ListKeeperWebApi.WebApi.Services
             if (userVm == null) return false;
             // The `ToDomain()` extension method converts the view model back to a database entity.
             var user = userVm.ToDomain();
+            if (user == null) return false; // Handle null result from ToDomain()
             return await _repo.Delete(user);
         }
 

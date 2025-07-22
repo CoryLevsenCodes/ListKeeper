@@ -1,13 +1,8 @@
-﻿using ListKeeper.ApiService.Models.ViewModels;
+﻿using System.Net;
 using ListKeeper.ApiService.Services.ListKeeperWebApi.WebApi.Services;
-using ListKeeperWebApi.WebApi.Models.ViewModels;
 using ListKeeperWebApi.WebApi.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Net;
-using System.Security.Claims;
-using System.Text;
+using ListKeeper.ApiService.Models.ViewModels;
 
 namespace ListKeeperWebApi.WebApi.Endpoints
 {
@@ -15,17 +10,19 @@ namespace ListKeeperWebApi.WebApi.Endpoints
     {
         public static RouteGroupBuilder MapNoteApiEndpoints(this RouteGroupBuilder group)
         {
-            // The endpoint mapping remains the same.
             group.MapGet("/", GetAllNotes)
                  .WithName("GetAllNotes")
                  .WithDescription("Gets all notes")
                  .RequireAuthorization("Admin");
 
-            // DO THIS OVER THE WEEKEND - CREATE, UPDATE, DELETE
+            group.MapPost("/search", GetAllNotesBySearchCriteria)
+                 .WithName("GetAllNotesBySearchCriteria")
+                 .WithDescription("Gets notes by search criteria")
+                 .RequireAuthorization("Admin");
 
-            group.MapGet("/{noteId}", GetNote)
-                 .WithName("GetNote")
-                 .WithDescription("Gets a note by their ID")
+            group.MapGet("/{id:int}", GetNoteById)
+                 .WithName("GetNoteById")
+                 .WithDescription("Gets a note by ID")
                  .RequireAuthorization("Admin");
 
             group.MapPost("/", CreateNote)
@@ -33,12 +30,12 @@ namespace ListKeeperWebApi.WebApi.Endpoints
                  .WithDescription("Creates a new note")
                  .RequireAuthorization("Admin");
 
-            group.MapPut("/{noteId}", UpdateNote)
+            group.MapPut("/{id:int}", UpdateNote)
                  .WithName("UpdateNote")
                  .WithDescription("Updates an existing note")
                  .RequireAuthorization("Admin");
 
-            group.MapDelete("/{noteId}", DeleteNote)
+            group.MapDelete("/{id:int}", DeleteNote)
                  .WithName("DeleteNote")
                  .WithDescription("Deletes a note")
                  .RequireAuthorization("Admin");
@@ -67,95 +64,147 @@ namespace ListKeeperWebApi.WebApi.Endpoints
             }
         }
 
-        private static async Task<IResult> GetNote(
-            int noteId,
+        private static async Task<IResult> GetNoteById(
+            int id,
             [FromServices] INoteService noteService,
             [FromServices] ILoggerFactory loggerFactory)
         {
-            var logger = loggerFactory.CreateLogger("GetNote");
+            var logger = loggerFactory.CreateLogger("Notes");
             try
             {
-                var note = await noteService.GetNoteByIdAsync(noteId);
+                logger.LogInformation("Getting note with ID: {Id}", id);
+                var note = await noteService.GetNoteByIdAsync(id);
+                
                 if (note == null)
                 {
-                    return Results.NotFound($"Note with ID {noteId} not found");
+                    return Results.NotFound($"Note with ID {id} not found");
                 }
+                
                 return Results.Ok(note);
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Error retrieving note with ID {UserId}", noteId);
+                logger.LogError(ex, "Error retrieving note with ID: {Id}", id);
                 return Results.Problem("An error occurred while retrieving the note", statusCode: (int)HttpStatusCode.InternalServerError);
             }
         }
 
         private static async Task<IResult> CreateNote(
-            NoteViewModel noteVM, // 'noteVM' correctly comes from the request body, so it does NOT get [FromServices]
+            [FromBody] NoteViewModel noteViewModel,
             [FromServices] INoteService noteService,
             [FromServices] ILoggerFactory loggerFactory)
         {
-            var logger = loggerFactory.CreateLogger("CreateNote");
+            var logger = loggerFactory.CreateLogger("Notes");
             try
             {
-                var newNote = await noteService.CreateNoteAsync(noteVM);
-                if (newNote == null)
+                logger.LogInformation("Creating new note");
+                
+                if (noteViewModel == null)
                 {
-                    return Results.Conflict($"Could not create note. Title {noteVM.Title} may already be in use.");
+                    return Results.BadRequest("Note data is required");
                 }
-                return Results.Created($"/api/notes/{newNote.Id}", newNote);
+
+                var createdNote = await noteService.CreateNoteAsync(noteViewModel);
+                
+                if (createdNote == null)
+                {
+                    return Results.Problem("Failed to create note", statusCode: (int)HttpStatusCode.InternalServerError);
+                }
+                
+                return Results.Created($"/api/notes/{createdNote.Id}", createdNote);
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Error creating note with title {Title}", noteVM?.Title);
+                logger.LogError(ex, "Error creating note");
                 return Results.Problem("An error occurred while creating the note", statusCode: (int)HttpStatusCode.InternalServerError);
             }
         }
 
-        // --- NOTE: Apply the [FromServices] fix to ALL your handlers ---
-
         private static async Task<IResult> UpdateNote(
-            int noteId,
-            NoteViewModel noteVM,
+            int id,
+            [FromBody] NoteViewModel noteViewModel,
             [FromServices] INoteService noteService,
             [FromServices] ILoggerFactory loggerFactory)
         {
-            var logger = loggerFactory.CreateLogger("UpdateNote");
+            var logger = loggerFactory.CreateLogger("Notes");
             try
             {
-                noteVM.Id = noteId;
-                var updatedNote = await noteService.UpdateNoteAsync(noteVM);
+                logger.LogInformation("Updating note with ID: {Id}", id);
+                
+                if (noteViewModel == null)
+                {
+                    return Results.BadRequest("Note data is required");
+                }
+
+                if (id != noteViewModel.Id)
+                {
+                    return Results.BadRequest("ID in URL does not match ID in note data");
+                }
+
+                var updatedNote = await noteService.UpdateNoteAsync(noteViewModel);
+                
                 if (updatedNote == null)
                 {
-                    return Results.NotFound($"Note with ID {noteId} not found");
+                    return Results.NotFound($"Note with ID {id} not found");
                 }
+                
                 return Results.Ok(updatedNote);
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Error updating note with ID {NoteId}", noteId);
+                logger.LogError(ex, "Error updating note with ID: {Id}", id);
                 return Results.Problem("An error occurred while updating the note", statusCode: (int)HttpStatusCode.InternalServerError);
             }
         }
 
         private static async Task<IResult> DeleteNote(
-            int noteId,
+            int id,
             [FromServices] INoteService noteService,
             [FromServices] ILoggerFactory loggerFactory)
         {
-            var logger = loggerFactory.CreateLogger("DeleteNote");
+            var logger = loggerFactory.CreateLogger("Notes");
             try
             {
-                var success = await noteService.DeleteNoteAsync(noteId);
-                if (!success)
+                logger.LogInformation("Deleting note with ID: {Id}", id);
+                
+                var result = await noteService.DeleteNoteAsync(id);
+                
+                if (!result)
                 {
-                    return Results.NotFound($"Note with ID {noteId} not found");
+                    return Results.NotFound($"Note with ID {id} not found");
                 }
-                return Results.Ok(new { status = "200", result = $"note: {noteId} deleted" });
+                
+                return Results.Ok(new { success = true, message = "Note deleted successfully" });
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Error deleting note with ID {NoteId}", noteId);
+                logger.LogError(ex, "Error deleting note with ID: {Id}", id);
                 return Results.Problem("An error occurred while deleting the note", statusCode: (int)HttpStatusCode.InternalServerError);
+            }
+        }
+
+        private static async Task<IResult> GetAllNotesBySearchCriteria(
+            [FromBody] SearchCriteriaViewModel searchCriteria,
+            [FromServices] INoteService noteService,
+            [FromServices] ILoggerFactory loggerFactory)
+        {
+            var logger = loggerFactory.CreateLogger("Notes");
+            try
+            {
+                logger.LogInformation("Getting notes by search criteria");
+                
+                if (searchCriteria == null)
+                {
+                    return Results.BadRequest("Search criteria is required");
+                }
+
+                var notes = await noteService.GetAllNotesBySearchCriteriaAsync(searchCriteria);
+                return Results.Ok(new { notes });
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Error retrieving notes by search criteria");
+                return Results.Problem("An error occurred while retrieving notes", statusCode: (int)HttpStatusCode.InternalServerError);
             }
         }
     }
