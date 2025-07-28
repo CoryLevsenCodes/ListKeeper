@@ -59,8 +59,8 @@
         <h5 class="modal-title" id="addNoteModalLabel">Add New Note</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-        <app-note-form></app-note-form>
+      <div class="modal-body"> 
+        <app-note-form (noteAdded)="onNoteAdded($event)"></app-note-form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -78,11 +78,12 @@
         <h5 class="modal-title" id="editNoteModalLabel">Edit Note</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-        <app-note-form 
-          #editNoteForm
-          [noteToEdit]="currentEditingNote" 
-          [isEditMode]="true">
+      <div class="modal-body"> 
+        <app-note-form  
+          #editNoteForm 
+          [noteToEdit]="currentEditingNote"  
+          [isEditMode]="true" 
+          (noteUpdated)="onNoteUpdated($event)"> 
         </app-note-form>
       </div>
       <div class="modal-footer">

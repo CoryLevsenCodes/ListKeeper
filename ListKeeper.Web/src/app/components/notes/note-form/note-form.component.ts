@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, SimpleChanges, Input } from '@angular/core';
+import { Component, OnInit, OnChanges, SimpleChanges, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { NoteService } from '../../../services/note.service';
@@ -15,6 +15,8 @@ import { Note } from '../../../models/note-model';
 export class NoteFormComponent implements OnInit, OnChanges {
   @Input() noteToEdit: Note | null = null;
   @Input() isEditMode: boolean = false;
+  @Output() noteAdded = new EventEmitter<Note>(); 
+  @Output() noteUpdated = new EventEmitter<Note>();
   
   noteForm: FormGroup;
 
@@ -26,6 +28,8 @@ export class NoteFormComponent implements OnInit, OnChanges {
     '#F8D7DA', // Light Red
     '#E2D9F3', // Light Purple
   ];
+
+  
 
   constructor(
     private fb: FormBuilder,
@@ -86,26 +90,49 @@ export class NoteFormComponent implements OnInit, OnChanges {
     return date.toISOString().split('T')[0];
   }
 
-  public addNote(): void {
-    if (this.noteForm.valid) {
-      //this.noteService.addNote(this.noteForm.value);
-      this.resetForm();
-    } else {
-      this.noteForm.markAllAsTouched();
-    }
-  }
+  public addNote(): void { 
+  if (this.noteForm.valid) { 
+    const newNote: Note = { 
+      id: 0, // Will be assigned by backend 
+      ...this.noteForm.value, 
+      dueDate: new Date(this.noteForm.value.dueDate) 
+    }; 
+    
+    this.noteService.create(newNote).subscribe({ 
+      next: (createdNote) => { 
+        console.log('Note created successfully:', createdNote); 
+        this.noteAdded.emit(createdNote); 
+        this.resetForm(); 
+      }, 
+      error: (error) => { 
+        console.error('Error creating note:', error); 
+      } 
+    }); 
+  } else { 
+    this.noteForm.markAllAsTouched(); 
+  } 
+} 
 
-  public updateNote(): void {
-    if (this.noteForm.valid && this.noteToEdit) {
-      const updatedNote: Note = {
-        ...this.noteToEdit,
-        ...this.noteForm.value,
-        dueDate: new Date(this.noteForm.value.dueDate)
-      };
-      //this.noteService.updateNote(updatedNote);
-    } else {
-      this.noteForm.markAllAsTouched();
-    }
+  public updateNote(): void { 
+    if (this.noteForm.valid && this.noteToEdit) { 
+      const updatedNote: Note = { 
+        ...this.noteToEdit, 
+        ...this.noteForm.value, 
+        dueDate: new Date(this.noteForm.value.dueDate) 
+      }; 
+      
+      this.noteService.update(updatedNote).subscribe({ 
+        next: (updated) => { 
+          console.log('Note updated successfully:', updated); 
+          this.noteUpdated.emit(updated); 
+        }, 
+        error: (error) => { 
+          console.error('Error updating note:', error); 
+        } 
+      }); 
+    } else { 
+      this.noteForm.markAllAsTouched(); 
+    } 
   }
 
   public saveNote(): void {
