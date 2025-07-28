@@ -16,12 +16,12 @@ namespace ListKeeper.ApiService.Models
         [StringLength(500)]
         public string? Description { get; set; }
 
-        public ICollection<Note>? Notes { get; set; }    
+        public ICollection<Note>? Notes { get; set; }
 
-        //public NoteCategoryViewModel()
-        //{
-        //    Name = string.Empty;
-        //    Description = string.Empty;
-        //}
+        public NoteCategory()
+        {
+            Name = string.Empty;
+            Description = string.Empty;
+        }
     }
 }
