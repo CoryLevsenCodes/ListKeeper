@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ListKeeper.ApiService.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20250722004728_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250728183238_NoteCategory")]
+    partial class NoteCategory
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -49,6 +49,9 @@ namespace ListKeeper.ApiService.Migrations
                     b.Property<bool>("IsCompleted")
                         .HasColumnType("bit");
 
+                    b.Property<int?>("NoteCategoryId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -56,7 +59,30 @@ namespace ListKeeper.ApiService.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("NoteCategoryId");
+
                     b.ToTable("Note");
+                });
+
+            modelBuilder.Entity("ListKeeper.ApiService.Models.NoteCategory", b =>
+                {
+                    b.Property<int>("NoteCategoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("NoteCategoryId"));
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.HasKey("NoteCategoryId");
+
+                    b.ToTable("NoteCategory");
                 });
 
             modelBuilder.Entity("ListKeeperWebApi.WebApi.Models.User", b =>
@@ -118,6 +144,20 @@ namespace ListKeeper.ApiService.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("ListKeeper.ApiService.Models.Note", b =>
+                {
+                    b.HasOne("ListKeeper.ApiService.Models.NoteCategory", "NoteCategory")
+                        .WithMany("Notes")
+                        .HasForeignKey("NoteCategoryId");
+
+                    b.Navigation("NoteCategory");
+                });
+
+            modelBuilder.Entity("ListKeeper.ApiService.Models.NoteCategory", b =>
+                {
+                    b.Navigation("Notes");
                 });
 #pragma warning restore 612, 618
         }

@@ -5,7 +5,7 @@
 namespace ListKeeper.ApiService.Migrations
 {
     /// <inheritdoc />
-    public partial class DataSeeder : Migration
+    public partial class NoteCategory : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

@@ -250,5 +250,25 @@ namespace ListKeeperWebApi.WebApi.Data
                 throw;
             }
         }
+
+        /// <summary>
+        /// Finds a user by their email address.
+        /// </summary>
+        public async Task<User?> GetByEmailAsync(string email)
+        {
+            _logger.LogInformation("Attempting to find user by email: {Email}", email);
+            try
+            {
+                return await _context.Users
+                    .Where(u => u.Email == email && u.DeletedAt == null)
+                    .FirstOrDefaultAsync();
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving user by email {Email}", email);
+                throw;
+            }
+        }
     }
 }

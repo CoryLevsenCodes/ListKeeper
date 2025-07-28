@@ -24,6 +24,9 @@ namespace ListKeeper.ApiService.Models
         [StringLength(16)]
         public string Color { get; set; }
 
+        public int? NoteCategoryId { get; set; }
+        public NoteCategory? NoteCategory { get; set; }  
+
         public Note()
         {
             Title = string.Empty;

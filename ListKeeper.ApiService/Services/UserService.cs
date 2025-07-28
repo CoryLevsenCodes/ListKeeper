@@ -176,5 +176,45 @@ namespace ListKeeperWebApi.WebApi.Services
             if (loginViewModel == null) return null;
             return await LoginAsync(loginViewModel.Username, loginViewModel.Password);
         }
+
+        /// <summary>
+        /// Registers a new user and returns their information if successful.
+        /// </summary>
+        public async Task<UserViewModel?> SignupAsync(SignupViewModel signupViewModel)
+        {
+            if (signupViewModel == null) return null;
+
+            // Check if user already exists 
+            var existingUser = await _repo.GetByEmailAsync(signupViewModel.Email);
+            if (existingUser != null)
+            {
+                _logger.LogWarning("Signup attempt with existing email: {Email}",
+        signupViewModel.Email);
+                return null; // User already exists 
+            }
+
+            // Create new user from signup data 
+            var userViewModel = new UserViewModel
+            {
+                Email = signupViewModel.Email,
+                Username = signupViewModel.Username,
+                Firstname = signupViewModel.FirstName,
+                Lastname = signupViewModel.LastName,
+                Password = signupViewModel.Password,
+                Role = "User", // Default role for new signups 
+                Phone = string.Empty
+            };
+
+            // Use existing CreateUserAsync method which handles password hashing 
+            var createdUser = await CreateUserAsync(userViewModel);
+
+            if (createdUser != null)
+            {
+                _logger.LogInformation("New user successfully created: {Email}",
+        signupViewModel.Email);
+            }
+
+            return createdUser;
+        }
     }
 }

@@ -43,6 +43,8 @@ namespace ListKeeperWebApi.WebApi.Data
 
         public DbSet<Note> Notes { get; set; }
 
+        public DbSet<NoteCategory> NoteCategories { get; set; }
+
         /// <summary>
         /// Configure the model that was discovered by convention from the entity types
         /// </summary>

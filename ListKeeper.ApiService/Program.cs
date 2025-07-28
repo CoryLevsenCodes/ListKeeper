@@ -68,6 +68,9 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<INoteRepository, NoteRepository>();
 builder.Services.AddScoped<INoteService, NoteService>();
 
+builder.Services.AddScoped<INoteCategoryRepository, NoteCategoryRepository>();
+builder.Services.AddScoped<INoteCategoryService, NoteCategoryService>();
+
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -236,6 +239,7 @@ app.UseAuthorization();
 //
 app.MapGroup($"{routePrefix}/users").MapUserApiEndpoints();
 app.MapGroup($"{routePrefix}/notes").MapNoteApiEndpoints();
+app.MapGroup($"{routePrefix}/notecategories").MapNoteCategoryApiEndpoints();
 
 // This is the final command that starts the web server and makes it listen for incoming requests.
 // The application will run until you stop it.

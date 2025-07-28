@@ -85,4 +85,19 @@ export class UserService {
   delete(id: number): Observable<boolean> {
     return this.http.delete<boolean>(`${this.baseApiUrl}/users/${id}`);
   }
+
+  signup(signupData: any): Observable<any> { 
+  return this.http.post<any>(`${this.baseApiUrl}/users/signup`, signupData) 
+    .pipe(tap(response => { 
+      if (response.user && response.token) { 
+        // Store user and token for automatic login after signup 
+        const user: User = { 
+          ...response.user, 
+          token: response.token 
+        }; 
+        localStorage.setItem('user', JSON.stringify(user)); 
+        this.currentUserSubject.next(user); 
+      } 
+    })); 
+  } 
 }

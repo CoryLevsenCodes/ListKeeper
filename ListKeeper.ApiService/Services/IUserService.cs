@@ -12,5 +12,6 @@ namespace ListKeeperWebApi.WebApi.Services
         Task<UserViewModel?> GetUserByIdAsync(int id);
         Task<UserViewModel?> LoginAsync(string email, string password);
         Task<UserViewModel?> UpdateUserAsync(UserViewModel userVm);
+        Task<UserViewModel?> SignupAsync(SignupViewModel signupViewModel);
     }
 }
