@@ -13,32 +13,32 @@ namespace ListKeeperWebApi.WebApi.Endpoints
             group.MapGet("/", GetAllNotes)
                  .WithName("GetAllNotes")
                  .WithDescription("Gets all notes")
-                 .RequireAuthorization("Admin");
+                 .RequireAuthorization();
 
             group.MapPost("/search", GetAllNotesBySearchCriteria)
                  .WithName("GetAllNotesBySearchCriteria")
                  .WithDescription("Gets notes by search criteria")
-                 .RequireAuthorization("Admin");
+                 .RequireAuthorization();
 
             group.MapGet("/{id:int}", GetNoteById)
                  .WithName("GetNoteById")
                  .WithDescription("Gets a note by ID")
-                 .RequireAuthorization("Admin");
+                 .RequireAuthorization();
 
             group.MapPost("/", CreateNote)
                  .WithName("CreateNote")
                  .WithDescription("Creates a new note")
-                 .RequireAuthorization("Admin");
+                 .RequireAuthorization();
 
             group.MapPut("/{id:int}", UpdateNote)
                  .WithName("UpdateNote")
                  .WithDescription("Updates an existing note")
-                 .RequireAuthorization("Admin");
+                 .RequireAuthorization();
 
             group.MapDelete("/{id:int}", DeleteNote)
                  .WithName("DeleteNote")
                  .WithDescription("Deletes a note")
-                 .RequireAuthorization("Admin");
+                 .RequireAuthorization();
 
             return group;
         }

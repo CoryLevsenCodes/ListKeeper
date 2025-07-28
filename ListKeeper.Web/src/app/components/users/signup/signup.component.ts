@@ -52,7 +52,7 @@ export class SignupComponent {
   if (this.signupForm.valid) { 
     this.isSubmitting = true; 
     this.errorMessage = ''; 
-     
+    
     // Prepare signup data 
     const signupData = { 
       firstName: this.signupForm.value.firstName, 
@@ -71,7 +71,7 @@ export class SignupComponent {
       next: (response) => { 
         this.isSubmitting = false; 
         this.showSuccessMessage = true; 
-         
+        
         // Auto-redirect after showing success message 
         setTimeout(() => { 
           this.router.navigate(['/notes']); 
