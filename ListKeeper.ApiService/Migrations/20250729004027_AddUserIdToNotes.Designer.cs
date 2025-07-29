@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ListKeeper.ApiService.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20250728183238_NoteCategory")]
-    partial class NoteCategory
+    [Migration("20250729004027_AddUserIdToNotes")]
+    partial class AddUserIdToNotes
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -57,9 +57,15 @@ namespace ListKeeper.ApiService.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("NoteCategoryId");
+
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("IX_Note_UserId");
 
                     b.ToTable("Note");
                 });
@@ -152,10 +158,23 @@ namespace ListKeeper.ApiService.Migrations
                         .WithMany("Notes")
                         .HasForeignKey("NoteCategoryId");
 
+                    b.HasOne("ListKeeperWebApi.WebApi.Models.User", "User")
+                        .WithMany("Notes")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("NoteCategory");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ListKeeper.ApiService.Models.NoteCategory", b =>
+                {
+                    b.Navigation("Notes");
+                });
+
+            modelBuilder.Entity("ListKeeperWebApi.WebApi.Models.User", b =>
                 {
                     b.Navigation("Notes");
                 });

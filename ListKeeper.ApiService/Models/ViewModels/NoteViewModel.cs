@@ -12,6 +12,11 @@ namespace ListKeeper.ApiService.Models.ViewModels
         public bool IsCompleted { get; set; }
         public string Color { get; set; }
 
+        /// <summary> 
+        /// Gets or sets the ID of the user who owns this note 
+        /// </summary> 
+        public int UserId { get; set; }
+
         public NoteViewModel()
         {
             Title = string.Empty;

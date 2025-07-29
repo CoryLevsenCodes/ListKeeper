@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ListKeeper.ApiService.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class AddUserIdToNotes : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -61,7 +61,8 @@ namespace ListKeeper.ApiService.Migrations
                     DueDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsCompleted = table.Column<bool>(type: "bit", nullable: false),
                     Color = table.Column<string>(type: "nvarchar(16)", maxLength: 16, nullable: false),
-                    NoteCategoryId = table.Column<int>(type: "int", nullable: true)
+                    NoteCategoryId = table.Column<int>(type: "int", nullable: true),
+                    UserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -71,12 +72,23 @@ namespace ListKeeper.ApiService.Migrations
                         column: x => x.NoteCategoryId,
                         principalTable: "NoteCategory",
                         principalColumn: "NoteCategoryId");
+                    table.ForeignKey(
+                        name: "FK_Note_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Note_NoteCategoryId",
                 table: "Note",
                 column: "NoteCategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Note_UserId",
+                table: "Note",
+                column: "UserId");
         }
 
         /// <inheritdoc />
@@ -86,10 +98,10 @@ namespace ListKeeper.ApiService.Migrations
                 name: "Note");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "NoteCategory");
 
             migrationBuilder.DropTable(
-                name: "NoteCategory");
+                name: "Users");
         }
     }
 }

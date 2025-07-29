@@ -1,3 +1,4 @@
+using ListKeeper.ApiService.Models;
 using ListKeeperWebApi.WebApi.Models.Interfaces;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -101,6 +102,8 @@ namespace ListKeeperWebApi.WebApi.Models
         /// </summary>
         [NotMapped]
         public string Token { get; set; } = null!;
+
+        public virtual ICollection<Note> Notes { get; set; }
 
         public User()
         {

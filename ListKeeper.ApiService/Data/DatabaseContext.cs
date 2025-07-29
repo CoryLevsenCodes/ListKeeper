@@ -52,6 +52,18 @@ namespace ListKeeperWebApi.WebApi.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            // Configure User-Note relationship 
+            modelBuilder.Entity<Note>()
+                .HasOne(n => n.User)
+                .WithMany(u => u.Notes)
+                .HasForeignKey(n => n.UserId)
+                .OnDelete(DeleteBehavior.Cascade); // When a user is deleted, delete their notes
+ 
+            // Create index on UserId for better query performance 
+            modelBuilder.Entity<Note>()
+                .HasIndex(n => n.UserId)
+                .HasDatabaseName("IX_Note_UserId");
         }
 
         /// <summary>
