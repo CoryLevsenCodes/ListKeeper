@@ -1,8 +1,8 @@
-﻿using ListKeeperWebApi.WebApi.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 using System.Numerics;
+using ListKeeperWebApi.WebApi.Models;
 
 namespace ListKeeper.ApiService.Models
 {
@@ -25,18 +25,15 @@ namespace ListKeeper.ApiService.Models
         [StringLength(16)]
         public string Color { get; set; }
 
-        public int? NoteCategoryId { get; set; }
-        public NoteCategory? NoteCategory { get; set; }
-
-        /// <summary> 
-        /// Gets or sets the ID of the user who owns this note 
-        /// </summary> 
+        /// <summary>
+        /// Gets or sets the ID of the user who owns this note
+        /// </summary>
         [Required]
         public int UserId { get; set; }
 
-        /// <summary> 
-        /// Navigation property to the User who owns this note 
-        /// </summary> 
+        /// <summary>
+        /// Navigation property to the User who owns this note
+        /// </summary>
         [ForeignKey("UserId")]
         public virtual User? User { get; set; }
 

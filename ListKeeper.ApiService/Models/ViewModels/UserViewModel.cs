@@ -25,6 +25,8 @@ namespace ListKeeperWebApi.WebApi.Models.ViewModels
 
         public string? Phone { get; set; }
 
+        public bool IsMfaEnabled { get; set; } = false;
+
         public DateTime? CreatedAt { get; set; }
 
         public string? CreatedBy { get; set; }

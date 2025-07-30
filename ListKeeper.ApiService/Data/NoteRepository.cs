@@ -48,6 +48,25 @@ namespace ListKeeperWebApi.WebApi.Data
             }
         }
 
+        /// <summary>
+        /// Finds a note by their primary key (ID) that belongs to a specific user.
+        /// </summary>
+        public async Task<Note?> GetByIdAsync(int id, int userId)
+        {
+            _logger.LogInformation("Attempting to find note by ID: {NoteId} for user: {UserId}", id, userId);
+            try
+            {
+                return await _context.Notes
+                    .Where(n => n.Id == id && n.UserId == userId)
+                    .FirstOrDefaultAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while getting note by ID: {NoteId} for user: {UserId}", id, userId);
+                throw;
+            }
+        }
+
 
 
         /// <summary>
@@ -64,6 +83,25 @@ namespace ListKeeperWebApi.WebApi.Data
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An error occurred while getting all notes");
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Retrieves a list of all notes from the database for a specific user.
+        /// </summary>
+        public async Task<IEnumerable<Note>> GetAllAsync(int userId)
+        {
+            _logger.LogInformation("Attempting to get all notes for user: {UserId}", userId);
+            try
+            {
+                return await _context.Notes
+                    .Where(n => n.UserId == userId)
+                    .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while getting all notes for user: {UserId}", userId);
                 throw;
             }
         }
@@ -200,6 +238,54 @@ namespace ListKeeperWebApi.WebApi.Data
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An error occurred while getting notes by search criteria");
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Retrieves notes based on search criteria for a specific user using database-level filtering for optimal performance.
+        /// </summary>
+        public async Task<IEnumerable<Note>> GetBySearchCriteriaAsync(SearchCriteria searchCriteria, int userId)
+        {
+            _logger.LogInformation("Attempting to get notes by search criteria for user: {UserId}", userId);
+            try
+            {
+                var query = _context.Notes.Where(n => n.UserId == userId);
+                var today = DateTime.Today;
+
+                // Filter by search text if provided
+                if (!string.IsNullOrWhiteSpace(searchCriteria.SearchText))
+                {
+                    var searchText = searchCriteria.SearchText.ToLowerInvariant();
+                    query = query.Where(n => 
+                        n.Title.ToLower().Contains(searchText) || 
+                        n.Content.ToLower().Contains(searchText));
+                }
+
+                // Filter by completion status if specified
+                if (searchCriteria.ShowOnlyCompleted.HasValue)
+                {
+                    query = query.Where(n => n.IsCompleted == searchCriteria.ShowOnlyCompleted.Value);
+                }
+
+                // Filter by statuses if not "All" (0=All, 1=Upcoming, 2=Past Due, 3=Completed)
+                if (searchCriteria.Statuses.Length > 0 && !searchCriteria.Statuses.Contains(0))
+                {
+                    var hasUpcoming = searchCriteria.Statuses.Contains(1);
+                    var hasPastDue = searchCriteria.Statuses.Contains(2);
+                    var hasCompleted = searchCriteria.Statuses.Contains(3);
+
+                    query = query.Where(n => 
+                        (hasUpcoming && n.DueDate.Date > today && !n.IsCompleted) ||
+                        (hasPastDue && n.DueDate.Date < today && !n.IsCompleted) ||
+                        (hasCompleted && n.IsCompleted));
+                }
+
+                return await query.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while getting notes by search criteria for user: {UserId}", userId);
                 throw;
             }
         }

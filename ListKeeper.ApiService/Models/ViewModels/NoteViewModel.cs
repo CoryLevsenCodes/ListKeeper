@@ -11,10 +11,10 @@ namespace ListKeeper.ApiService.Models.ViewModels
         public DateTime DueDate { get; set; }
         public bool IsCompleted { get; set; }
         public string Color { get; set; }
-
-        /// <summary> 
-        /// Gets or sets the ID of the user who owns this note 
-        /// </summary> 
+        
+        /// <summary>
+        /// Gets or sets the ID of the user who owns this note
+        /// </summary>
         public int UserId { get; set; }
 
         public NoteViewModel()

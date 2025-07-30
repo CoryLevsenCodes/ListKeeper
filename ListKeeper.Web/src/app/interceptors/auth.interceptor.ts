@@ -13,14 +13,14 @@ export class AuthInterceptor implements HttpInterceptor {
     ) { }
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        // Get the current user and token
+        // Get the current user and token from UserService
         const currentUser = this.userService.currentUserValue;
-        const isLoggedIn = currentUser && currentUser.token;
+        const isLoggedIn = this.userService.isAuthenticated();
 
         // Check if this is an API request (not external URLs)
         const isApiUrl = request.url.includes('/api/');
 
-        if (isLoggedIn && isApiUrl) {
+        if (isLoggedIn && isApiUrl && currentUser?.token) {
             // Clone the request and add the Authorization header with Bearer token
             request = request.clone({
                 setHeaders: {

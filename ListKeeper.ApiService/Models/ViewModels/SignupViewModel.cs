@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace ListKeeperWebApi.WebApi.Models.ViewModels
 {
@@ -19,7 +19,7 @@ namespace ListKeeperWebApi.WebApi.Models.ViewModels
         [Required]
         [StringLength(50, MinimumLength = 3)]
         public string Username { get; set; } = string.Empty;
- 
+
         [Required]
         [StringLength(100, MinimumLength = 6)]
         public string Password { get; set; } = string.Empty;
@@ -31,8 +31,8 @@ namespace ListKeeperWebApi.WebApi.Models.ViewModels
         [Required]
         public bool AgreeToTerms { get; set; }
 
-        // Optional fields 
         public bool WantsUpdates { get; set; } = true;
+
         public string? FavoriteTimHortonsItem { get; set; }
     }
 }

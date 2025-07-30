@@ -146,6 +146,27 @@ namespace ListKeeperWebApi.WebApi.Data
         }
 
         /// <summary>
+        /// Finds a user by their email address.
+        /// </summary>
+        public async Task<User?> GetByEmailAsync(string email)
+        {
+            _logger.LogInformation("Attempting to find user by email: {Email}", email);
+            try
+            {
+                // `Where` filters the records. `FirstOrDefaultAsync` gets the first match or null if none are found.
+                // We also check that the user is not "soft-deleted" (`DeletedAt == null`).
+                return await _context.Users
+                    .Where(u => u.Email == email && u.DeletedAt == null)
+                    .FirstOrDefaultAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving user by email {Email}", email);
+                throw;
+            }
+        }
+
+        /// <summary>
         /// Retrieves a list of all users from the database.
         /// </summary>
         public async Task<IEnumerable<User>> GetAllAsync()
@@ -247,26 +268,6 @@ namespace ListKeeperWebApi.WebApi.Data
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An error occurred while deleting user with ID: {id}", id);
-                throw;
-            }
-        }
-
-        /// <summary>
-        /// Finds a user by their email address.
-        /// </summary>
-        public async Task<User?> GetByEmailAsync(string email)
-        {
-            _logger.LogInformation("Attempting to find user by email: {Email}", email);
-            try
-            {
-                return await _context.Users
-                    .Where(u => u.Email == email && u.DeletedAt == null)
-                    .FirstOrDefaultAsync();
-
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error retrieving user by email {Email}", email);
                 throw;
             }
         }

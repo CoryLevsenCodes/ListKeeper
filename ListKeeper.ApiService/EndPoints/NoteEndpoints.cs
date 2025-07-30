@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using ListKeeper.ApiService.Services.ListKeeperWebApi.WebApi.Services;
+using ListKeeper.ApiService.Helpers;
 using ListKeeperWebApi.WebApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using ListKeeper.ApiService.Models.ViewModels;
@@ -48,14 +49,33 @@ namespace ListKeeperWebApi.WebApi.Endpoints
             // The [FromServices] attribute tells the API to get these objects
             // from the services container, not the request body. This is the fix.
             [FromServices] INoteService noteService,
+            [FromServices] ICurrentUserHelper currentUserHelper,
             [FromServices] ILoggerFactory loggerFactory)
         {
             var logger = loggerFactory.CreateLogger("Notes");
             try
             {
                 logger.LogInformation("Getting all notes");
-                var notes = await noteService.GetAllNotesAsync();
-                return Results.Ok(new { notes });
+                
+                // Check if current user is admin
+                if (currentUserHelper.IsCurrentUserAdmin())
+                {
+                    // Admin can see all notes
+                    var allNotes = await noteService.GetAllNotesAsync();
+                    return Results.Ok(new { notes = allNotes });
+                }
+                else
+                {
+                    // Regular users only see their own notes
+                    var userId = currentUserHelper.GetCurrentUserId();
+                    if (!userId.HasValue)
+                    {
+                        return Results.Unauthorized();
+                    }
+                    
+                    var userNotes = await noteService.GetAllNotesAsync(userId.Value);
+                    return Results.Ok(new { notes = userNotes });
+                }
             }
             catch (Exception ex)
             {
@@ -67,13 +87,32 @@ namespace ListKeeperWebApi.WebApi.Endpoints
         private static async Task<IResult> GetNoteById(
             int id,
             [FromServices] INoteService noteService,
+            [FromServices] ICurrentUserHelper currentUserHelper,
             [FromServices] ILoggerFactory loggerFactory)
         {
             var logger = loggerFactory.CreateLogger("Notes");
             try
             {
                 logger.LogInformation("Getting note with ID: {Id}", id);
-                var note = await noteService.GetNoteByIdAsync(id);
+                
+                NoteViewModel? note;
+                
+                if (currentUserHelper.IsCurrentUserAdmin())
+                {
+                    // Admin can see any note
+                    note = await noteService.GetNoteByIdAsync(id);
+                }
+                else
+                {
+                    // Regular users only see their own notes
+                    var userId = currentUserHelper.GetCurrentUserId();
+                    if (!userId.HasValue)
+                    {
+                        return Results.Unauthorized();
+                    }
+                    
+                    note = await noteService.GetNoteByIdAsync(id, userId.Value);
+                }
                 
                 if (note == null)
                 {
@@ -92,6 +131,7 @@ namespace ListKeeperWebApi.WebApi.Endpoints
         private static async Task<IResult> CreateNote(
             [FromBody] NoteViewModel noteViewModel,
             [FromServices] INoteService noteService,
+            [FromServices] ICurrentUserHelper currentUserHelper,
             [FromServices] ILoggerFactory loggerFactory)
         {
             var logger = loggerFactory.CreateLogger("Notes");
@@ -103,6 +143,16 @@ namespace ListKeeperWebApi.WebApi.Endpoints
                 {
                     return Results.BadRequest("Note data is required");
                 }
+
+                // Get current user ID and assign it to the note
+                var userId = currentUserHelper.GetCurrentUserId();
+                if (!userId.HasValue)
+                {
+                    return Results.Unauthorized();
+                }
+                
+                // Always assign the note to the current user (security measure)
+                noteViewModel.UserId = userId.Value;
 
                 var createdNote = await noteService.CreateNoteAsync(noteViewModel);
                 
@@ -124,6 +174,7 @@ namespace ListKeeperWebApi.WebApi.Endpoints
             int id,
             [FromBody] NoteViewModel noteViewModel,
             [FromServices] INoteService noteService,
+            [FromServices] ICurrentUserHelper currentUserHelper,
             [FromServices] ILoggerFactory loggerFactory)
         {
             var logger = loggerFactory.CreateLogger("Notes");
@@ -139,6 +190,25 @@ namespace ListKeeperWebApi.WebApi.Endpoints
                 if (id != noteViewModel.Id)
                 {
                     return Results.BadRequest("ID in URL does not match ID in note data");
+                }
+
+                var userId = currentUserHelper.GetCurrentUserId();
+                if (!userId.HasValue)
+                {
+                    return Results.Unauthorized();
+                }
+
+                // Security check: ensure user can only update their own notes (unless admin)
+                if (!currentUserHelper.IsCurrentUserAdmin())
+                {
+                    var existingNote = await noteService.GetNoteByIdAsync(id, userId.Value);
+                    if (existingNote == null)
+                    {
+                        return Results.NotFound($"Note with ID {id} not found");
+                    }
+                    
+                    // Ensure the note stays assigned to the current user
+                    noteViewModel.UserId = userId.Value;
                 }
 
                 var updatedNote = await noteService.UpdateNoteAsync(noteViewModel);
@@ -160,12 +230,29 @@ namespace ListKeeperWebApi.WebApi.Endpoints
         private static async Task<IResult> DeleteNote(
             int id,
             [FromServices] INoteService noteService,
+            [FromServices] ICurrentUserHelper currentUserHelper,
             [FromServices] ILoggerFactory loggerFactory)
         {
             var logger = loggerFactory.CreateLogger("Notes");
             try
             {
                 logger.LogInformation("Deleting note with ID: {Id}", id);
+                
+                var userId = currentUserHelper.GetCurrentUserId();
+                if (!userId.HasValue)
+                {
+                    return Results.Unauthorized();
+                }
+
+                // Security check: ensure user can only delete their own notes (unless admin)
+                if (!currentUserHelper.IsCurrentUserAdmin())
+                {
+                    var existingNote = await noteService.GetNoteByIdAsync(id, userId.Value);
+                    if (existingNote == null)
+                    {
+                        return Results.NotFound($"Note with ID {id} not found");
+                    }
+                }
                 
                 var result = await noteService.DeleteNoteAsync(id);
                 
@@ -186,6 +273,7 @@ namespace ListKeeperWebApi.WebApi.Endpoints
         private static async Task<IResult> GetAllNotesBySearchCriteria(
             [FromBody] SearchCriteriaViewModel searchCriteria,
             [FromServices] INoteService noteService,
+            [FromServices] ICurrentUserHelper currentUserHelper,
             [FromServices] ILoggerFactory loggerFactory)
         {
             var logger = loggerFactory.CreateLogger("Notes");
@@ -198,7 +286,25 @@ namespace ListKeeperWebApi.WebApi.Endpoints
                     return Results.BadRequest("Search criteria is required");
                 }
 
-                var notes = await noteService.GetAllNotesBySearchCriteriaAsync(searchCriteria);
+                IEnumerable<NoteViewModel> notes;
+                
+                if (currentUserHelper.IsCurrentUserAdmin())
+                {
+                    // Admin can search all notes
+                    notes = await noteService.GetAllNotesBySearchCriteriaAsync(searchCriteria);
+                }
+                else
+                {
+                    // Regular users only search their own notes
+                    var userId = currentUserHelper.GetCurrentUserId();
+                    if (!userId.HasValue)
+                    {
+                        return Results.Unauthorized();
+                    }
+                    
+                    notes = await noteService.GetAllNotesBySearchCriteriaAsync(searchCriteria, userId.Value);
+                }
+                
                 return Results.Ok(new { notes });
             }
             catch (Exception ex)

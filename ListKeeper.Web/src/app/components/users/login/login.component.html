@@ -42,7 +42,8 @@
               </p>
             </div>
 
-            <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <!-- Regular Login Form -->
+            <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" *ngIf="!showMfaInput">
               <div class="alert alert-danger" *ngIf="error">
                 {{ error }}
               </div>
@@ -100,6 +101,50 @@
                     Sign up here, eh! 🍁
                   </button>
                 </p>
+              </div>
+            </form>
+
+            <!-- MFA Verification Form -->
+            <form [formGroup]="mfaForm" (ngSubmit)="onMfaSubmit()" *ngIf="showMfaInput">
+              <div class="alert alert-info">
+                <h6><i class="fas fa-shield-alt"></i> Multi-Factor Authentication Required</h6>
+                <p class="mb-0">Please enter the 6-digit code from your Microsoft Authenticator app.</p>
+              </div>
+
+              <div class="alert alert-danger" *ngIf="error">
+                {{ error }}
+              </div>
+
+              <!-- MFA Code Field -->
+              <div class="mb-4">
+                <label for="mfaCode" class="form-label fw-semibold">Authentication Code</label>
+                <input 
+                  type="text" 
+                  class="form-control text-center"
+                  [class.is-invalid]="mfaForm.get('mfaCode')?.invalid && mfaForm.get('mfaCode')?.touched"
+                  id="mfaCode" 
+                  formControlName="mfaCode"
+                  placeholder="000000"
+                  maxlength="6"
+                  style="font-family: monospace; font-size: 1.4em; letter-spacing: 0.3em;">
+                <div class="invalid-feedback">
+                  Please enter a valid 6-digit code!
+                </div>
+              </div>
+
+              <!-- Submit Button -->
+              <div class="d-grid gap-2 mb-4">
+                <button type="submit" class="btn btn-success btn-lg" [disabled]="!mfaForm.valid || isLoading">
+                  <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status"></span>
+                  Verify & Sign In 🚀
+                </button>
+              </div>
+
+              <!-- Back to Login -->
+              <div class="text-center">
+                <button type="button" class="btn btn-link" (click)="showMfaInput = false; error = ''">
+                  ← Back to Login
+                </button>
               </div>
             </form>
           </div>

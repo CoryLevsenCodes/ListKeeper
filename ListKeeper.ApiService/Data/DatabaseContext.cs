@@ -43,8 +43,6 @@ namespace ListKeeperWebApi.WebApi.Data
 
         public DbSet<Note> Notes { get; set; }
 
-        public DbSet<NoteCategory> NoteCategories { get; set; }
-
         /// <summary>
         /// Configure the model that was discovered by convention from the entity types
         /// </summary>
@@ -53,14 +51,14 @@ namespace ListKeeperWebApi.WebApi.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            // Configure User-Note relationship 
+            // Configure User-Note relationship
             modelBuilder.Entity<Note>()
                 .HasOne(n => n.User)
                 .WithMany(u => u.Notes)
                 .HasForeignKey(n => n.UserId)
                 .OnDelete(DeleteBehavior.Cascade); // When a user is deleted, delete their notes
- 
-            // Create index on UserId for better query performance 
+
+            // Create index on UserId for better query performance
             modelBuilder.Entity<Note>()
                 .HasIndex(n => n.UserId)
                 .HasDatabaseName("IX_Note_UserId");

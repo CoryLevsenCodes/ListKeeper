@@ -1,5 +1,28 @@
 <div *ngIf="user; else loggedOut">
-  Welcome {{ user.firstname }} {{ user.lastname }}! <a href="#" (click)="logout()">Logout</a>
+  <a 
+    href="#" 
+    (click)="goToProfile()" 
+    class="user-profile-link"
+    [class.mfa-warning]="!user.isMfaEnabled"
+    [title]="!user.isMfaEnabled ? 'Your account is not secure! Click to enable Multi-Factor Authentication (MFA) to protect your account.' : 'View your profile'">
+    
+    <span class="user-icon" [class.warning-icon]="!user.isMfaEnabled">👤</span>
+    
+    <span class="user-name" *ngIf="user.firstname && user.lastname; else usernameOnly">
+      {{ user.firstname }} {{ user.lastname }}
+    </span>
+    <ng-template #usernameOnly>
+      <span class="user-name">{{ user.username || user.email }}</span>
+    </ng-template>
+    
+    <span 
+      *ngIf="!user.isMfaEnabled" 
+      class="warning-indicator"
+      title="Account not secure - Enable MFA">
+      ⚠️
+    </span>
+  </a> | 
+  <a href="#" (click)="logout()">Logout</a>
 </div>
 <ng-template #loggedOut>
   <a href="#" (click)="login()" *ngIf="shouldShowLoginLink()">Login</a>

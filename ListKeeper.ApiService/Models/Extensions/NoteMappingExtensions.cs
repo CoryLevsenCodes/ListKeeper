@@ -19,7 +19,8 @@ namespace ListKeeper.ApiService.Models.Extensions
                 Content = note.Content,
                 DueDate = note.DueDate,
                 IsCompleted = note.IsCompleted,
-                Title = note.Title
+                Title = note.Title,
+                UserId = note.UserId
             };
         }
 
@@ -37,7 +38,8 @@ namespace ListKeeper.ApiService.Models.Extensions
                 Content = viewModel.Content,
                 DueDate = viewModel.DueDate,
                 IsCompleted = viewModel.IsCompleted,
-                Title = viewModel.Title
+                Title = viewModel.Title,
+                UserId = viewModel.UserId
             };
         }
     }

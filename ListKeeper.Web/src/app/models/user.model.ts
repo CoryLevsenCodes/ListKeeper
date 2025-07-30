@@ -7,6 +7,10 @@ export interface User {
     firstname?: string;
     lastname?: string;
     phone?: string;
+    isMfaEnabled?: boolean;
+    mfaSecretKey?: string;
+    mfaBackupCodes?: string;
+    mfaSetupDate?: Date;
     createdAt?: Date;
     createdBy?: string;
     updatedAt?: Date;

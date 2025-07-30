@@ -48,6 +48,11 @@ export class UserStatusComponent implements OnInit {
     return false;
   }
 
+  goToProfile() {
+    this.router.navigate(['/profile']);
+    return false;
+  }
+
   logout() {
     this.userService.logout();
     this.router.navigate(['']);

@@ -1,0 +1,110 @@
+<div class="mfa-verification-container">
+  <div class="verification-header">
+    <h3>Two-Factor Authentication</h3>
+    <p>Enter the 6-digit verification code from your authenticator app.</p>
+  </div>
+
+  <!-- User Information -->
+  <div class="user-info" *ngIf="username">
+    <i class="user-icon">👤</i>
+    <span>{{ username }}</span>
+  </div>
+
+  <!-- Main Verification Form -->
+  <form [formGroup]="verificationForm" (ngSubmit)="onSubmit()" class="verification-form">
+    <div class="form-group">
+      <label for="verificationCode">Verification Code</label>
+      <input
+        type="text"
+        id="verificationCode"
+        formControlName="verificationCode"
+        (input)="onCodeInput($event)"
+        class="code-input"
+        placeholder="000000"
+        maxlength="6"
+        autocomplete="one-time-code"
+        [class.error]="verificationCode?.invalid && verificationCode?.touched"
+        [disabled]="isLoading || attemptsRemaining <= 0"
+      />
+      
+      <div class="field-error" *ngIf="verificationCode?.invalid && verificationCode?.touched">
+        <span *ngIf="verificationCode?.errors?.['required']">
+          Verification code is required
+        </span>
+        <span *ngIf="verificationCode?.errors?.['pattern']">
+          Please enter a 6-digit code
+        </span>
+      </div>
+    </div>
+
+    <!-- Error Message -->
+    <div class="error-message" *ngIf="errorMessage">
+      <i class="error-icon">⚠️</i>
+      {{ errorMessage }}
+    </div>
+
+    <!-- Attempts Remaining -->
+    <div class="attempts-info" *ngIf="attemptsRemaining < 3 && attemptsRemaining > 0">
+      <span class="attempts-text">{{ attemptsRemaining }} attempts remaining</span>
+    </div>
+
+    <!-- Form Actions -->
+    <div class="form-actions">
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="verificationForm.invalid || isLoading || attemptsRemaining <= 0"
+      >
+        <span *ngIf="isLoading" class="spinner"></span>
+        <span *ngIf="!isLoading">Verify</span>
+      </button>
+      
+      <button
+        type="button"
+        class="btn btn-secondary"
+        (click)="onCancel()"
+        [disabled]="isLoading"
+      >
+        Cancel
+      </button>
+    </div>
+  </form>
+
+  <!-- Backup Code Option -->
+  <div class="backup-option" *ngIf="showBackupCodeOption">
+    <div class="backup-divider">
+      <span>or</span>
+    </div>
+    
+    <button
+      type="button"
+      class="btn btn-outline"
+      (click)="onUseBackupCode()"
+      [disabled]="isLoading"
+    >
+      Use Backup Code
+    </button>
+    
+    <p class="backup-help">
+      Can't access your authenticator app? Use one of your backup codes instead.
+    </p>
+  </div>
+
+  <!-- Help Information -->
+  <div class="help-section">
+    <details class="help-details">
+      <summary>Need help?</summary>
+      <div class="help-content">
+        <ul>
+          <li>Open your Microsoft Authenticator app</li>
+          <li>Find the ListKeeper account</li>
+          <li>Enter the 6-digit code shown</li>
+          <li>The code refreshes every 30 seconds</li>
+        </ul>
+        <p class="help-note">
+          If you're having trouble, you can use one of your backup codes instead.
+        </p>
+      </div>
+    </details>
+  </div>
+</div>

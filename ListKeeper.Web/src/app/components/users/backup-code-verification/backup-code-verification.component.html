@@ -1,0 +1,120 @@
+<div class="backup-verification-container">
+  <div class="verification-header">
+    <h3>Use Backup Code</h3>
+    <p>Enter one of your backup codes to complete authentication.</p>
+  </div>
+
+  <!-- User Information -->
+  <div class="user-info" *ngIf="username">
+    <i class="user-icon">👤</i>
+    <span>{{ username }}</span>
+  </div>
+
+  <!-- Warning Message -->
+  <div class="warning-message">
+    <i class="warning-icon">⚠️</i>
+    <div>
+      <strong>Important:</strong> Each backup code can only be used once. 
+      After using a code, it will be permanently deleted.
+    </div>
+  </div>
+
+  <!-- Backup Code Form -->
+  <form [formGroup]="backupForm" (ngSubmit)="onSubmit()" class="backup-form">
+    <div class="form-group">
+      <label for="backupCode">Backup Code</label>
+      <input
+        type="text"
+        id="backupCode"
+        formControlName="backupCode"
+        (input)="onCodeInput($event)"
+        class="backup-input"
+        placeholder="ABC12345"
+        maxlength="8"
+        autocomplete="one-time-code"
+        [class.error]="backupCode?.invalid && backupCode?.touched"
+        [disabled]="isLoading || attemptsRemaining <= 0"
+      />
+      
+      <div class="field-error" *ngIf="backupCode?.invalid && backupCode?.touched">
+        <span *ngIf="backupCode?.errors?.['required']">
+          Backup code is required
+        </span>
+        <span *ngIf="backupCode?.errors?.['pattern']">
+          Please enter a valid 8-character backup code
+        </span>
+      </div>
+    </div>
+
+    <!-- Error Message -->
+    <div class="error-message" *ngIf="errorMessage">
+      <i class="error-icon">⚠️</i>
+      {{ errorMessage }}
+    </div>
+
+    <!-- Attempts Remaining -->
+    <div class="attempts-info" *ngIf="attemptsRemaining < 5 && attemptsRemaining > 0">
+      <span class="attempts-text">{{ attemptsRemaining }} attempts remaining</span>
+    </div>
+
+    <!-- Form Actions -->
+    <div class="form-actions">
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="backupForm.invalid || isLoading || attemptsRemaining <= 0"
+      >
+        <span *ngIf="isLoading" class="spinner"></span>
+        <span *ngIf="!isLoading">Verify Code</span>
+      </button>
+      
+      <button
+        type="button"
+        class="btn btn-secondary"
+        (click)="onCancel()"
+        [disabled]="isLoading"
+      >
+        Cancel
+      </button>
+    </div>
+  </form>
+
+  <!-- Back to MFA Option -->
+  <div class="back-option">
+    <div class="back-divider">
+      <span>or</span>
+    </div>
+    
+    <button
+      type="button"
+      class="btn btn-outline"
+      (click)="onBackToMfa()"
+      [disabled]="isLoading"
+    >
+      ← Back to Authenticator
+    </button>
+    
+    <p class="back-help">
+      Go back to using your authenticator app if you have access to it.
+    </p>
+  </div>
+
+  <!-- Help Information -->
+  <div class="help-section">
+    <details class="help-details">
+      <summary>About backup codes</summary>
+      <div class="help-content">
+        <ul>
+          <li>Backup codes are 8-character codes (letters and numbers)</li>
+          <li>Each code can only be used once</li>
+          <li>They were provided when you set up MFA</li>
+          <li>Store them in a safe place for emergencies</li>
+        </ul>
+        <div class="help-warning">
+          <strong>Lost your backup codes?</strong> 
+          You can generate new ones from your profile after logging in.
+        </div>
+      </div>
+    </details>
+  </div>
+</div>

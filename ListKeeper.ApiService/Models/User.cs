@@ -1,5 +1,5 @@
-using ListKeeper.ApiService.Models;
 using ListKeeperWebApi.WebApi.Models.Interfaces;
+using ListKeeper.ApiService.Models;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -64,6 +64,28 @@ namespace ListKeeperWebApi.WebApi.Models
         public string? Phone { get; set; }
 
         /// <summary>
+        /// Gets or sets whether MFA (Multi-Factor Authentication) is enabled for this user
+        /// </summary>
+        public bool IsMfaEnabled { get; set; } = false;
+
+        /// <summary>
+        /// Gets or sets the MFA secret key for TOTP generation (encrypted/hashed in database)
+        /// </summary>
+        [StringLength(500)]
+        public string? MfaSecretKey { get; set; }
+
+        /// <summary>
+        /// Gets or sets the backup codes for MFA recovery (JSON array of hashed codes)
+        /// </summary>
+        [StringLength(2000)]
+        public string? MfaBackupCodes { get; set; }
+
+        /// <summary>
+        /// Gets or sets when MFA was last set up or modified
+        /// </summary>
+        public DateTime? MfaSetupDate { get; set; }
+
+        /// <summary>
         /// Gets or sets the creation date and time
         /// </summary>
         /// 
@@ -103,7 +125,10 @@ namespace ListKeeperWebApi.WebApi.Models
         [NotMapped]
         public string Token { get; set; } = null!;
 
-        public virtual ICollection<Note> Notes { get; set; }
+        /// <summary>
+        /// Navigation property to the notes owned by this user
+        /// </summary>
+        public virtual ICollection<Note>? Notes { get; set; }
 
         public User()
         {

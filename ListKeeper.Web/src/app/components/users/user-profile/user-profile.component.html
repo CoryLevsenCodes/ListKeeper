@@ -1,0 +1,132 @@
+<div class="user-profile-container">
+  <div class="profile-header">
+    <h2>👤 User Profile</h2>
+    <button class="btn-secondary" (click)="goBack()">← Back to Notes</button>
+  </div>
+
+  <div class="profile-content" *ngIf="!isLoading">
+    <!-- User Information Section -->
+    <div class="profile-section">
+      <h3>📋 Account Information</h3>
+      <div class="user-info" *ngIf="currentUser">
+        <div class="info-row">
+          <label>Email:</label>
+          <span>{{ currentUser.email }}</span>
+        </div>
+        <div class="info-row">
+          <label>Username:</label>
+          <span>{{ currentUser.username }}</span>
+        </div>
+        <div class="info-row">
+          <label>Role:</label>
+          <span class="role-badge" [class]="currentUser.role?.toLowerCase()">
+            {{ currentUser.role }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- MFA Security Section -->
+    <div class="profile-section">
+      <h3>🔐 Multi-Factor Authentication (MFA)</h3>
+      
+      <div class="mfa-status" *ngIf="mfaStatus">
+        <div class="status-header">
+          <div class="status-indicator" [class]="mfaStatus.isEnabled ? 'enabled' : 'disabled'">
+            <span class="status-icon">{{ mfaStatus.isEnabled ? '🔒' : '🔓' }}</span>
+            <span class="status-text">
+              MFA is {{ mfaStatus.isEnabled ? 'ENABLED' : 'DISABLED' }}
+            </span>
+          </div>
+        </div>
+
+        <!-- MFA Enabled State -->
+        <div *ngIf="mfaStatus.isEnabled" class="mfa-enabled">
+          <div class="mfa-info">
+            <p><strong>✅ Your account is protected with MFA</strong></p>
+            <p *ngIf="mfaStatus.setupDate">
+              <small>Enabled on: {{ mfaStatus.setupDate | date:'medium' }}</small>
+            </p>
+            <p>
+              <small>Backup codes remaining: {{ mfaStatus.backupCodesRemaining }}</small>
+            </p>
+          </div>
+
+          <div class="mfa-actions">
+            <button 
+              class="btn-warning" 
+              (click)="regenerateBackupCodes()"
+              [disabled]="mfaStatus.backupCodesRemaining > 5">
+              🔄 Generate New Backup Codes
+            </button>
+            <button class="btn-danger" (click)="disableMfa()">
+              ❌ Disable MFA
+            </button>
+          </div>
+
+          <div class="mfa-help">
+            <h4>🛡️ MFA is Active</h4>
+            <ul>
+              <li>Use Microsoft Authenticator app for login codes</li>
+              <li>Keep backup codes in a safe place</li>
+              <li>Generate new backup codes if running low</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- MFA Disabled State -->
+        <div *ngIf="!mfaStatus.isEnabled" class="mfa-disabled">
+          <div class="security-warning">
+            <h4>⚠️ Enhance Your Security</h4>
+            <p>
+              Multi-Factor Authentication adds an extra layer of security to your account. 
+              We highly recommend enabling MFA to protect your notes and personal information.
+            </p>
+          </div>
+
+          <div class="mfa-benefits">
+            <h4>🔐 Benefits of MFA:</h4>
+            <ul>
+              <li>✅ Protects against password breaches</li>
+              <li>✅ Works with Microsoft Authenticator app</li>
+              <li>✅ Includes backup codes for recovery</li>
+              <li>✅ Takes less than 2 minutes to set up</li>
+            </ul>
+          </div>
+
+          <button class="btn-primary btn-large" (click)="enableMfa()">
+            🚀 Enable MFA Now
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Account Actions Section -->
+    <div class="profile-section">
+      <h3>⚙️ Account Actions</h3>
+      <div class="action-buttons">
+        <button class="btn-secondary" (click)="goBack()">
+          📝 Back to Notes
+        </button>
+        <button class="btn-danger" (click)="logout()">
+          🚪 Logout
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading-container" *ngIf="isLoading">
+    <div class="spinner"></div>
+    <p>Loading profile...</p>
+  </div>
+
+  <!-- Messages -->
+  <div class="message success-message" *ngIf="successMessage">
+    ✅ {{ successMessage }}
+  </div>
+
+  <div class="message error-message" *ngIf="errorMessage">
+    ❌ {{ errorMessage }}
+  </div>
+</div>

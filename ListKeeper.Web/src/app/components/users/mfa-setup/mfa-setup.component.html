@@ -1,0 +1,187 @@
+<div class="mfa-setup-container">
+  <div class="setup-header">
+    <h2>🔐 Enable Multi-Factor Authentication</h2>
+    <button class="btn-secondary" (click)="cancel()">✕ Cancel</button>
+  </div>
+
+  <!-- Progress Steps -->
+  <div class="progress-steps">
+    <div class="step" [class.completed]="isStepComplete(1)" [class.current]="isStepCurrent(1)">
+      <div class="step-number">1</div>
+      <div class="step-label">Initialize</div>
+    </div>
+    <div class="step-divider"></div>
+    <div class="step" [class.completed]="isStepComplete(2)" [class.current]="isStepCurrent(2)">
+      <div class="step-number">2</div>
+      <div class="step-label">Setup</div>
+    </div>
+    <div class="step-divider"></div>
+    <div class="step" [class.completed]="isStepComplete(3)" [class.current]="isStepCurrent(3)">
+      <div class="step-number">3</div>
+      <div class="step-label">Complete</div>
+    </div>
+  </div>
+
+  <div class="step-title">
+    <h3>{{ getStepTitle() }}</h3>
+  </div>
+
+  <!-- Step 1: Loading/Initialization -->
+  <div class="setup-content" *ngIf="currentStep === 1">
+    <div class="loading-step">
+      <div class="spinner" *ngIf="isLoading"></div>
+      <p *ngIf="isLoading">Generating your unique MFA secret and QR code...</p>
+      <div class="error-message" *ngIf="errorMessage && !isLoading">
+        ❌ {{ errorMessage }}
+        <button class="btn-primary" (click)="startMfaSetup()">Try Again</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 2: QR Code Setup and Verification -->
+  <div class="setup-content" *ngIf="currentStep === 2 && setupData">
+    <div class="setup-instructions">
+      <h4>📱 Setup Instructions</h4>
+      <ol>
+        <li>Open the <strong>Microsoft Authenticator</strong> app on your phone</li>
+        <li>Tap the <strong>"+"</strong> button to add a new account</li>
+        <li>Select <strong>"Work or school account"</strong> or <strong>"Personal account"</strong></li>
+        <li>Scan the QR code below with your phone's camera</li>
+        <li>Enter the 6-digit code from your app to verify setup</li>
+      </ol>
+    </div>
+
+    <!-- QR Code Display -->
+    <div class="qr-code-section">
+      <div class="qr-code-container">
+        <img 
+          [src]="'data:image/png;base64,' + setupData.qrCodeImage" 
+          alt="MFA QR Code"
+          class="qr-code-image">
+      </div>
+      
+      <div class="manual-entry">
+        <h5>Can't scan? Enter manually:</h5>
+        <div class="secret-key">
+          <code>{{ setupData.secretKey }}</code>
+          <button 
+            class="btn-copy" 
+            (click)="copySecretKey()"
+            title="Copy secret key">
+            📋
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Verification Form -->
+    <form [formGroup]="setupForm" (ngSubmit)="verifyAndEnable()" class="verification-form">
+      <div class="form-group">
+        <label for="verificationCode">
+          🔢 Enter the 6-digit code from Microsoft Authenticator:
+        </label>
+        <input 
+          type="text" 
+          id="verificationCode"
+          formControlName="verificationCode"
+          class="verification-input"
+          placeholder="123456"
+          maxlength="6"
+          autocomplete="off">
+        
+        <div class="field-error" 
+             *ngIf="setupForm.get('verificationCode')?.touched && setupForm.get('verificationCode')?.errors">
+          <span *ngIf="setupForm.get('verificationCode')?.errors?.['required']">
+            Verification code is required
+          </span>
+          <span *ngIf="setupForm.get('verificationCode')?.errors?.['pattern']">
+            Please enter a 6-digit code
+          </span>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-secondary" (click)="previousStep()">
+          ← Back
+        </button>
+        <button 
+          type="submit" 
+          class="btn-primary"
+          [disabled]="!setupForm.valid || isLoading">
+          {{ isLoading ? 'Verifying...' : 'Verify & Enable MFA' }}
+        </button>
+      </div>
+    </form>
+
+    <!-- Backup Codes Preview -->
+    <div class="backup-codes-preview">
+      <h4>🔑 Your Backup Codes</h4>
+      <p class="backup-info">
+        Save these codes in a secure location. You can use them to access your account if you lose your phone.
+      </p>
+      <div class="backup-codes-grid">
+        <span *ngFor="let code of setupData.backupCodes" class="backup-code">
+          {{ code }}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 3: Success and Final Instructions -->
+  <div class="setup-content" *ngIf="currentStep === 3">
+    <div class="success-step">
+      <div class="success-icon">🎉</div>
+      <h4>MFA Successfully Enabled!</h4>
+      <p>Your account is now protected with Multi-Factor Authentication.</p>
+
+      <!-- Final Backup Codes -->
+      <div class="final-backup-codes" *ngIf="setupData">
+        <h5>🔑 Important: Save Your Backup Codes</h5>
+        <p class="warning-text">
+          ⚠️ Store these backup codes in a safe place. You won't see them again!
+        </p>
+        
+        <div class="backup-codes-final">
+          <div class="backup-codes-grid">
+            <span *ngFor="let code of setupData.backupCodes" class="backup-code">
+              {{ code }}
+            </span>
+          </div>
+          
+          <div class="backup-actions">
+            <button class="btn-secondary" (click)="copyBackupCodes()">
+              📋 Copy Codes
+            </button>
+            <button class="btn-secondary" (click)="downloadBackupCodes()">
+              💾 Download Codes
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Next Steps -->
+      <div class="next-steps">
+        <h5>✅ What's Next?</h5>
+        <ul>
+          <li>You'll need your phone for future logins</li>
+          <li>Keep backup codes in a secure location</li>
+          <li>Test your setup by logging out and back in</li>
+        </ul>
+      </div>
+
+      <button class="btn-primary btn-large" (click)="finishSetup()">
+        🏠 Return to Profile
+      </button>
+    </div>
+  </div>
+
+  <!-- Error Messages -->
+  <div class="message error-message" *ngIf="errorMessage && currentStep > 1">
+    ❌ {{ errorMessage }}
+  </div>
+
+  <!-- Success Messages -->
+  <div class="message success-message" *ngIf="successMessage">
+    ✅ {{ successMessage }}
+  </div>
+</div>

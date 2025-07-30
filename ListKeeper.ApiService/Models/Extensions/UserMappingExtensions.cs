@@ -34,6 +34,7 @@ namespace ListKeeperWebApi.WebApi.Models.Extensions
                 Role = user.Role ?? string.Empty,
                 Firstname = user.Firstname, // Firstname and Lastname can be null
                 Lastname = user.Lastname,
+                IsMfaEnabled = user.IsMfaEnabled, // Include MFA status
                 // The token is only populated during login
                 // Also, as a security precaution, we never return the password in the view model
                 Token = user.Token, 

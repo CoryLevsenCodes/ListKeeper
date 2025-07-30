@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { UserService } from '../../../services/user.service'; 
+import { UserService } from '../../../services/user.service';
 
 @Component({
   selector: 'app-signup',
@@ -31,8 +31,7 @@ export class SignupComponent {
       confirmPassword: ['', Validators.required],
       agreeToTerms: [false, Validators.requiredTrue],
       wantsUpdates: [true], // Pre-checked because who doesn't want updates? 😉
-      favoriteTimHortonsItem: ['Double-Double'], // Because we're Canadian!
-      
+      favoriteTimHortonsItem: ['Double-Double'] // Because we're Canadian!
     }, { validators: this.passwordMatchValidator });
   }
 
@@ -48,48 +47,48 @@ export class SignupComponent {
     return null;
   }
 
-  onSubmit() { 
-  if (this.signupForm.valid) { 
-    this.isSubmitting = true; 
-    this.errorMessage = ''; 
-    
-    // Prepare signup data 
-    const signupData = { 
-      firstName: this.signupForm.value.firstName, 
-      lastName: this.signupForm.value.lastName, 
-      email: this.signupForm.value.email, 
-      username: this.signupForm.value.username, 
-      password: this.signupForm.value.password, 
-      confirmPassword: this.signupForm.value.confirmPassword, 
-      agreeToTerms: this.signupForm.value.agreeToTerms, 
-      wantsUpdates: this.signupForm.value.wantsUpdates, 
-      favoriteTimHortonsItem: this.signupForm.value.favoriteTimHortonsItem 
-    }; 
- 
-    // Call the signup service 
-    this.userService.signup(signupData).subscribe({ 
-      next: (response) => { 
-        this.isSubmitting = false; 
-        this.showSuccessMessage = true; 
-        
-        // Auto-redirect after showing success message 
-        setTimeout(() => { 
-          this.router.navigate(['/notes']); 
-        }, 2000); 
-      }, 
-      error: (error) => { 
-        this.isSubmitting = false; 
-        console.error('Signup error:', error); 
-        this.errorMessage = error.error?.message || 'Signup failed. Please try again.'; 
-      } 
-    }); 
-  } else { 
-    // Mark all fields as touched to show validation errors 
-    Object.keys(this.signupForm.controls).forEach(key => { 
-      this.signupForm.get(key)?.markAsTouched(); 
-    }); 
-  } 
-}
+  onSubmit() {
+    if (this.signupForm.valid) {
+      this.isSubmitting = true;
+      this.errorMessage = '';
+      
+      // Prepare signup data
+      const signupData = {
+        firstName: this.signupForm.value.firstName,
+        lastName: this.signupForm.value.lastName,
+        email: this.signupForm.value.email,
+        username: this.signupForm.value.username,
+        password: this.signupForm.value.password,
+        confirmPassword: this.signupForm.value.confirmPassword,
+        agreeToTerms: this.signupForm.value.agreeToTerms,
+        wantsUpdates: this.signupForm.value.wantsUpdates,
+        favoriteTimHortonsItem: this.signupForm.value.favoriteTimHortonsItem
+      };
+
+      // Call the signup service
+      this.userService.signup(signupData).subscribe({
+        next: (response) => {
+          this.isSubmitting = false;
+          this.showSuccessMessage = true;
+          
+          // Auto-redirect after showing success message
+          setTimeout(() => {
+            this.router.navigate(['/notes']);
+          }, 2000);
+        },
+        error: (error) => {
+          this.isSubmitting = false;
+          console.error('Signup error:', error);
+          this.errorMessage = error.error?.message || 'Signup failed. Please try again.';
+        }
+      });
+    } else {
+      // Mark all fields as touched to show validation errors
+      Object.keys(this.signupForm.controls).forEach(key => {
+        this.signupForm.get(key)?.markAsTouched();
+      });
+    }
+  }
 
   goBack() {
     this.router.navigate(['/notes']);

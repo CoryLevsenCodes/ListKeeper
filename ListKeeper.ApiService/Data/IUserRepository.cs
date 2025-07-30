@@ -11,9 +11,9 @@ namespace ListKeeperWebApi.WebApi.Data
         Task<bool> Delete(User user);
         Task<Boolean> Delete(int id);
         Task<IEnumerable<User>> GetAllAsync();
+        Task<User?> GetByEmailAsync(string email);
         Task<User?> GetByIdAsync(int id);
         Task<User?> GetByUsernameAsync(string username);
         Task<User> Update(User user);
-        Task<User?> GetByEmailAsync(string email);
     }
 }

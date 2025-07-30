@@ -190,6 +190,21 @@ namespace ListKeeperWebApi.WebApi.Endpoints
                     return Results.Unauthorized();
                 }
 
+                // Check if MFA is enabled for this user
+                if (user.IsMfaEnabled)
+                {
+                    // Don't return the full JWT token yet - require MFA verification first
+                    // Generate a temporary MFA token for the verification step
+                    var mfaToken = GenerateMfaToken(user, config);
+                    
+                    return Results.Ok(new
+                    {
+                        MfaRequired = true,
+                        MfaToken = mfaToken,
+                        Message = "Multi-factor authentication required. Please enter your 6-digit code from Microsoft Authenticator."
+                    });
+                }
+
                 // --- CORRECTED LOGIC ---
                 // Always generate a new token here to ensure it's created by this method's logic.
                 // This removes any ambiguity about where the token comes from.
@@ -202,32 +217,6 @@ namespace ListKeeperWebApi.WebApi.Endpoints
                 logger.LogError(ex, "Error authenticating user {Email}", model?.Username);
                 return Results.Problem("An error occurred during authentication", statusCode: (int)HttpStatusCode.InternalServerError);
             }
-        }
-
-        private static string GenerateJwtToken(UserViewModel user, IConfiguration config)
-        {
-            var secret = config["Jwt:Secret"];
-            if (string.IsNullOrEmpty(secret))
-            {
-                throw new InvalidOperationException("JWT secret is not configured.");
-            }
-            var key = Encoding.UTF8.GetBytes(secret);
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new[]
-                {
-                    new Claim("id", user.Id.ToString()),
-                    new Claim(ClaimTypes.Name, user.Username ?? string.Empty),
-                    new Claim(ClaimTypes.Email, user.Email ?? string.Empty),
-                    // This is the crucial claim that the authorization policy checks.
-                    new Claim(ClaimTypes.Role, user.Role ?? string.Empty)
-                }),
-                Expires = DateTime.UtcNow.AddDays(7),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
         }
 
         private static async Task<IResult> Signup(
@@ -252,10 +241,10 @@ namespace ListKeeperWebApi.WebApi.Endpoints
                     return Results.BadRequest("User already exists or signup failed");
                 }
 
-                // Generate JWT token for immediate login after signup 
+                // Generate JWT token for immediate login after signup
                 var token = GenerateJwtToken(user, config);
-
-                // Return user info with token (same format as authenticate endpoint) 
+                
+                // Return user info with token (same as authenticate endpoint)
                 return Results.Ok(new
                 {
                     user = new
@@ -272,11 +261,64 @@ namespace ListKeeperWebApi.WebApi.Endpoints
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Error during signup for email: {Email}",
-                model?.Email);
-                        return Results.Problem("An error occurred during signup", statusCode:
-                (int)HttpStatusCode.InternalServerError);
+                logger.LogError(ex, "Error during signup for email: {Email}", model?.Email);
+                return Results.Problem("An error occurred during signup", statusCode: (int)HttpStatusCode.InternalServerError);
             }
+        }
+
+        private static string GenerateJwtToken(UserViewModel user, IConfiguration config)
+        {
+            var secret = config["Jwt:Secret"];
+            if (string.IsNullOrEmpty(secret))
+            {
+                throw new InvalidOperationException("JWT secret is not configured.");
+            }
+            var key = Encoding.UTF8.GetBytes(secret);
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[]
+                {
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()), // Standard claim for user ID
+                    new Claim("id", user.Id.ToString()), // Keep for backward compatibility
+                    new Claim(ClaimTypes.Name, user.Username ?? string.Empty),
+                    new Claim(ClaimTypes.Email, user.Email ?? string.Empty),
+                    // This is the crucial claim that the authorization policy checks.
+                    new Claim(ClaimTypes.Role, user.Role ?? string.Empty)
+                }),
+                Expires = DateTime.UtcNow.AddDays(7),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
+        }
+
+        /// <summary>
+        /// Generates a temporary MFA token that allows user to complete MFA verification
+        /// </summary>
+        private static string GenerateMfaToken(UserViewModel user, IConfiguration config)
+        {
+            var secret = config["Jwt:Secret"];
+            if (string.IsNullOrEmpty(secret))
+            {
+                throw new InvalidOperationException("JWT secret is not configured.");
+            }
+            var key = Encoding.UTF8.GetBytes(secret);
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[]
+                {
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                    new Claim("mfa_pending", "true"), // Special claim indicating MFA is pending
+                    new Claim(ClaimTypes.Email, user.Email ?? string.Empty),
+                    new Claim("username", user.Username ?? string.Empty)
+                }),
+                Expires = DateTime.UtcNow.AddMinutes(10), // Short expiry for MFA tokens
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
         }
     }
 }

@@ -47,9 +47,9 @@ namespace ListKeeperWebApi.WebApi.Services
                 Color = createNoteVm.Color,
                 Content = createNoteVm.Content,
                 Id = createNoteVm.Id,
-                IsCompleted = createNoteVm.IsCompleted
+                IsCompleted = createNoteVm.IsCompleted,
+                UserId = createNoteVm.UserId // Assign the note to the user
             };
-
 
             // business rules checking
 
@@ -76,6 +76,7 @@ namespace ListKeeperWebApi.WebApi.Services
             note.Content = noteVm.Content;
             note.Id = noteVm.Id;
             note.IsCompleted = noteVm.IsCompleted;
+            note.UserId = noteVm.UserId; // Update the user assignment
 
             // Note: We deliberately do not update the password here. Password changes
             // should be handled in a separate, dedicated "ChangePassword" method for security.
@@ -93,6 +94,15 @@ namespace ListKeeperWebApi.WebApi.Services
             // The `?.` is a null-conditional operator. If 'notes' is null, it won't throw an error.
             // The `??` is a null-coalescing operator.
             // If the result of the Select is null, it returns an empty list instead.
+            return notes?.Select(u => u.ToViewModel()).Where(vm => vm != null).Cast<NoteViewModel>() ?? Enumerable.Empty<NoteViewModel>();
+        }
+
+        /// <summary>
+        /// Retrieves all notes from the system for a specific user.
+        /// </summary>
+        public async Task<IEnumerable<NoteViewModel>> GetAllNotesAsync(int userId)
+        {
+            var notes = await _repo.GetAllAsync(userId);
             return notes?.Select(u => u.ToViewModel()).Where(vm => vm != null).Cast<NoteViewModel>() ?? Enumerable.Empty<NoteViewModel>();
         }
 
@@ -126,6 +136,15 @@ namespace ListKeeperWebApi.WebApi.Services
         }
 
         /// <summary>
+        /// Retrieves a single note by their ID for a specific user.
+        /// </summary>
+        public async Task<NoteViewModel?> GetNoteByIdAsync(int id, int userId)
+        {
+            var note = await _repo.GetByIdAsync(id, userId);
+            return note?.ToViewModel();
+        }
+
+        /// <summary>
         /// Retrieves notes based on search criteria including text search, completion status, and due date filters.
         /// </summary>
         public async Task<IEnumerable<NoteViewModel>> GetAllNotesBySearchCriteriaAsync(SearchCriteriaViewModel searchCriteria)
@@ -143,6 +162,27 @@ namespace ListKeeperWebApi.WebApi.Services
             
             // Use the optimized repository method that builds efficient database queries
             var notes = await _repo.GetBySearchCriteriaAsync(domainSearchCriteria);
+            return notes?.Select(n => n.ToViewModel()).Where(vm => vm != null).Cast<NoteViewModel>() ?? Enumerable.Empty<NoteViewModel>();
+        }
+
+        /// <summary>
+        /// Retrieves notes based on search criteria for a specific user including text search, completion status, and due date filters.
+        /// </summary>
+        public async Task<IEnumerable<NoteViewModel>> GetAllNotesBySearchCriteriaAsync(SearchCriteriaViewModel searchCriteria, int userId)
+        {
+            // If "All" status is selected (0) or no statuses provided, and no other filters, use the simple GetAll
+            if ((searchCriteria.Statuses.Contains(0) || searchCriteria.Statuses.Length == 0) &&
+                string.IsNullOrWhiteSpace(searchCriteria.SearchText) &&
+                !searchCriteria.ShowOnlyCompleted.HasValue)
+            {
+                return await GetAllNotesAsync(userId);
+            }
+
+            // Convert ViewModel to domain model for repository layer
+            var domainSearchCriteria = searchCriteria.ToDomain();
+            
+            // Use the optimized repository method that builds efficient database queries
+            var notes = await _repo.GetBySearchCriteriaAsync(domainSearchCriteria, userId);
             return notes?.Select(n => n.ToViewModel()).Where(vm => vm != null).Cast<NoteViewModel>() ?? Enumerable.Empty<NoteViewModel>();
         }
 

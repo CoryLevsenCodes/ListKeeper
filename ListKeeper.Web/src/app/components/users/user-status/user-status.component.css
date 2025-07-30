@@ -1,0 +1,54 @@
+.user-profile-link {
+  color: black;
+  text-decoration: underline;
+  margin-right: 8px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.user-profile-link:hover {
+  text-decoration: underline;
+  color: #333;
+}
+
+/* MFA Warning Styles */
+.user-profile-link.mfa-warning {
+  color: #dc3545; /* Bootstrap danger red */
+  font-weight: 500;
+}
+
+.user-profile-link.mfa-warning:hover {
+  color: #b02a37; /* Darker red on hover */
+}
+
+.user-icon {
+  font-size: 1em;
+}
+
+.user-icon.warning-icon {
+  color: #dc3545;
+  filter: drop-shadow(0 0 2px rgba(220, 53, 69, 0.3));
+}
+
+.user-name {
+  display: inline;
+}
+
+.warning-indicator {
+  font-size: 0.9em;
+  margin-left: 4px;
+  animation: pulse-warning 2s infinite;
+}
+
+@keyframes pulse-warning {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.1);
+  }
+}

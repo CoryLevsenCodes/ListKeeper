@@ -239,13 +239,19 @@ export class NoteListComponent implements OnInit, AfterViewInit, OnDestroy {
     this.modalInstance?.show();
   }
 
-  addNote(): void { 
-  this.noteFormComponent.addNote(); 
-  } 
+  addNote(): void {
+    this.noteFormComponent.addNote();
+  }
 
-  onNoteAdded(note: Note): void { 
-  this.refreshNotes(this.currentSearchTerm, this.statusForm.value); 
-  this.modalInstance?.hide(); 
+  onNoteAdded(note: Note): void {
+    this.refreshNotes(this.currentSearchTerm, this.statusForm.value);
+    this.modalInstance?.hide();
+  }
+
+  onNoteUpdated(note: Note): void {
+    this.refreshNotes(this.currentSearchTerm, this.statusForm.value);
+    this.editModalInstance?.hide();
+    this.currentEditingNote = null;
   }
 
   deleteNote(id: number): void {
@@ -257,23 +263,23 @@ export class NoteListComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  confirmDelete(): void { 
-    if (this.currentDeletingNote) { 
-      this.noteService.delete(this.currentDeletingNote.id).subscribe({ 
-        next: (response) => { 
-          console.log('Note deleted successfully:', response.message); 
-          this.refreshNotes(this.currentSearchTerm, this.statusForm.value); 
-          this.deleteModalInstance?.hide(); 
-          this.currentDeletingNote = null; 
-        }, 
-        error: (error) => { 
-          console.error('Error deleting note:', error); 
-          this.deleteModalInstance?.hide(); 
-          this.currentDeletingNote = null; 
-        } 
-      }); 
-    } 
-  } 
+  confirmDelete(): void {
+    if (this.currentDeletingNote) {
+      this.noteService.delete(this.currentDeletingNote.id).subscribe({
+        next: (response) => {
+          console.log('Note deleted successfully:', response.message);
+          this.refreshNotes(this.currentSearchTerm, this.statusForm.value);
+          this.deleteModalInstance?.hide();
+          this.currentDeletingNote = null;
+        },
+        error: (error) => {
+          console.error('Error deleting note:', error);
+          this.deleteModalInstance?.hide();
+          this.currentDeletingNote = null;
+        }
+      });
+    }
+  }
 
   cancelDelete(): void {
     this.deleteModalInstance?.hide();
@@ -285,35 +291,29 @@ export class NoteListComponent implements OnInit, AfterViewInit, OnDestroy {
     this.editModalInstance?.show();
   }
 
-  updateNote(): void { 
-    if (this.currentEditingNote && this.editNoteFormComponent) { 
-      this.editNoteFormComponent.saveNote(); 
-    } 
+  updateNote(): void {
+    if (this.currentEditingNote && this.editNoteFormComponent) {
+      this.editNoteFormComponent.saveNote();
+    }
   }
 
-  onNoteUpdated(note: Note): void { 
-    this.refreshNotes(this.currentSearchTerm, this.statusForm.value); 
-    this.editModalInstance?.hide(); 
-    this.currentEditingNote = null; 
-  }
-
-  completeNote(id: number): void { 
-    const noteToComplete = this.notes.find(note => note.id === id); 
-    if (noteToComplete) { 
-      const updatedNote: Note = { 
-        ...noteToComplete, 
-        isCompleted: !noteToComplete.isCompleted 
-      }; 
+  completeNote(id: number): void {
+    const noteToComplete = this.notes.find(note => note.id === id);
+    if (noteToComplete) {
+      const updatedNote: Note = {
+        ...noteToComplete,
+        isCompleted: !noteToComplete.isCompleted
+      };
       
-      this.noteService.update(updatedNote).subscribe({ 
-        next: (updated) => { 
-          console.log('Note completion status updated:', updated); 
-          this.refreshNotes(this.currentSearchTerm, this.statusForm.value); 
-        }, 
-        error: (error) => { 
-          console.error('Error updating note completion status:', error); 
-        } 
-      }); 
-    } 
+      this.noteService.update(updatedNote).subscribe({
+        next: (updated) => {
+          console.log('Note completion status updated:', updated);
+          this.refreshNotes(this.currentSearchTerm, this.statusForm.value);
+        },
+        error: (error) => {
+          console.error('Error updating note completion status:', error);
+        }
+      });
+    }
   }
 }
